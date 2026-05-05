@@ -60,16 +60,19 @@ router.post('/', async (req, res) => {
   try {
     const { product: productId, style, quantity, notes } = req.body;
     const product = await Product.findById(productId)
-      .populate('components.materials.material')
-      .populate('sharedMaterials.material');
+      .populate({ path: 'semiProducts.semiProduct', populate: { path: 'materials.material' } });
     if (!product) return res.status(404).json({ error: 'Product not found' });
 
-    // Calculate cost snapshot
-    const componentsCost = (product.components || []).reduce((sum, comp) =>
-      sum + comp.materials.reduce((s, item) => s + item.quantity * item.unitCost, 0), 0);
-    const sharedCost = (product.sharedMaterials || []).reduce((sum, item) =>
-      sum + item.quantity * item.unitCost, 0);
-    const totalCost = componentsCost + sharedCost;
+    // Calculate cost from semiProducts → materials
+    const totalCost = (product.semiProducts || []).reduce((sum, entry) => {
+      const sp = entry.semiProduct;
+      if (!sp || !sp.materials) return sum;
+      const spCost = (sp.materials || []).reduce((s, m) => {
+        const unitPrice = m.material?.unitPrice || 0;
+        return s + m.quantity * unitPrice;
+      }, 0);
+      return sum + spCost * entry.quantity;
+    }, 0);
     const netProfit = (product.price - totalCost) * (1 - product.commissionRate);
 
     const sale = await SaleRecord.create({
