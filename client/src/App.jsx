@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Materials from './pages/Materials';
 import Series from './pages/Series';
+import SeriesEdit from './pages/SeriesEdit';
 import Products from './pages/Products';
 import ProductEdit from './pages/ProductEdit';
 import SemiProducts from './pages/SemiProducts';
@@ -18,6 +19,8 @@ export default function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/materials" element={<Materials />} />
         <Route path="/series" element={<Series />} />
+        <Route path="/series/new" element={<SeriesEdit />} />
+        <Route path="/series/:id/edit" element={<SeriesEdit />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/new" element={<ProductEdit />} />
         <Route path="/products/:id/edit" element={<ProductEdit />} />
