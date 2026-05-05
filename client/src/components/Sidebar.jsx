@@ -15,8 +15,8 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col min-h-screen">
-      <div className="p-4 text-pink-400 font-bold text-lg tracking-tight">🧶 LittleBeads</div>
+    <aside className="w-56 bg-card border-r border-border flex flex-col min-h-screen">
+      <div className="p-4 text-primary font-bold text-lg tracking-tight">🧶 LittleBeads</div>
       <nav className="flex-1">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -26,8 +26,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-5 py-3 text-sm transition-colors duration-150 ${
                 isActive
-                  ? 'bg-gray-800 text-white border-l-3 border-blue-400'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/50'
+                  ? 'bg-accent text-accent-foreground border-l-[3px] border-primary'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               }`
             }
           >
