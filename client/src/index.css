@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    /* 背景层次 — page < card < popover，逐级提亮 */
+    --background: #17171a;
+    --card: #1e1e22;
+    --popover: #2a2a2e;
+    --muted: #232326;
+
+    /* 文字层次 */
+    --foreground: #f0f1f5;
+    --card-foreground: #f0f1f5;
+    --popover-foreground: #f0f1f5;
+    --muted-foreground: #86909c;
+
+    /* 主色调 — Arco 蓝 */
+    --primary: #165DFF;
+    --primary-foreground: #ffffff;
+    --accent: rgba(22, 93, 255, 0.15);
+    --accent-foreground: #4080FF;
+
+    /* 次要主色（中性） */
+    --secondary: #2a2a2e;
+    --secondary-foreground: #f0f1f5;
+
+    /* 边框与焦点 */
+    --border: #333338;
+    --input: #333338;
+    --ring: #165DFF;
+
+    /* 功能色 */
+    --destructive: #f53f3f;
+    --destructive-foreground: #ffffff;
+
+    /* 圆角 */
+    --radius: 0.5rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
