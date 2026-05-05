@@ -1,0 +1,5 @@
+{
+  "name": "redbook-inventory-management",
+  "private": true,
+  "workspaces": ["server", "client"]
+}
