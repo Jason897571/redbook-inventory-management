@@ -4,6 +4,7 @@ const Product = require('../models/Product');
 
 const deepPopulate = [
   { path: 'semiProducts.semiProduct', populate: { path: 'materials.material' } },
+  { path: 'series', select: 'name' },
 ];
 
 router.get('/', async (req, res) => {
