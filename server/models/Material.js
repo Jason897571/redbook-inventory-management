@@ -4,7 +4,6 @@ const materialSchema = new mongoose.Schema({
   name: { type: String, required: true },
   category: { type: String, required: true },
   unitPrice: { type: Number, required: true, default: 0 },
-  unitPriceFormula: { type: String, default: '' },
   unit: { type: String, default: '个' },
   stock: { type: Number, default: 0 },
   stockAlertThreshold: { type: Number, default: 10 },
