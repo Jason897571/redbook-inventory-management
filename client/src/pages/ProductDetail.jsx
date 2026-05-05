@@ -130,7 +130,7 @@ export default function ProductDetail() {
     }
   };
 
-  if (!product) return <div className="text-gray-400">加载中...</div>;
+  if (!product) return <div className="text-muted-foreground">加载中...</div>;
 
   // Calculate costs
   const componentsCost = (product.components || []).reduce((sum, comp) =>
@@ -154,10 +154,10 @@ export default function ProductDetail() {
     return (
       <>
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-gray-500">{label}</span>
+          <span className="text-xs text-muted-foreground">{label}</span>
           {available.length > 0 && (
             <Select onValueChange={onAdd}>
-              <SelectTrigger className="w-40 bg-gray-800 border-gray-700 text-xs h-7">
+              <SelectTrigger className="w-40 text-xs h-7">
                 <SelectValue placeholder="+ 添加材料" />
               </SelectTrigger>
               <SelectContent>
@@ -171,7 +171,7 @@ export default function ProductDetail() {
         {(items || []).length > 0 ? (
           <table className="w-full text-sm mb-2">
             <thead>
-              <tr className="text-gray-500 text-xs">
+              <tr className="text-muted-foreground text-xs">
                 <th className="pb-1 text-left">材料</th>
                 <th className="pb-1 text-right">单价</th>
                 <th className="pb-1 text-right w-20">用量</th>
@@ -181,35 +181,35 @@ export default function ProductDetail() {
             </thead>
             <tbody>
               {items.map((item, i) => (
-                <tr key={i} className="border-t border-gray-800/50">
-                  <td className="py-1.5 text-white text-xs">{item.material?.name || '未知材料'}</td>
-                  <td className="py-1.5 text-right text-gray-400 text-xs">¥{item.unitCost.toFixed(4)}</td>
+                <tr key={i} className="border-t border-border/50">
+                  <td className="py-1.5 text-foreground text-xs">{item.material?.name || '未知材料'}</td>
+                  <td className="py-1.5 text-right text-muted-foreground text-xs">¥{item.unitCost.toFixed(4)}</td>
                   <td className="py-1.5 text-right">
                     <Input
                       type="number"
                       step="0.1"
                       value={item.quantity}
                       onChange={(e) => onUpdate(i, 'quantity', parseFloat(e.target.value) || 0)}
-                      className="w-16 bg-gray-800 border-gray-700 text-right text-xs ml-auto h-7"
+                      className="w-16 text-right text-xs ml-auto h-7"
                     />
                   </td>
-                  <td className="py-1.5 text-right text-gray-300 text-xs">¥{(item.quantity * item.unitCost).toFixed(4)}</td>
+                  <td className="py-1.5 text-right text-foreground text-xs">¥{(item.quantity * item.unitCost).toFixed(4)}</td>
                   <td className="py-1.5 text-center">
-                    <button onClick={() => onRemove(i)} className="text-gray-500 hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
+                    <button onClick={() => onRemove(i)} className="text-muted-foreground hover:text-red-400 transition-colors"><Trash2 size={12} /></button>
                   </td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-gray-800">
-                <td colSpan={3} className="py-1 text-right text-xs text-gray-500">小计:</td>
-                <td className="py-1 text-right text-xs font-medium text-gray-300">¥{subtotal.toFixed(4)}</td>
+              <tr className="border-t border-border">
+                <td colSpan={3} className="py-1 text-right text-xs text-muted-foreground">小计:</td>
+                <td className="py-1 text-right text-xs font-medium text-foreground">¥{subtotal.toFixed(4)}</td>
                 <td></td>
               </tr>
             </tfoot>
           </table>
         ) : (
-          <div className="text-xs text-gray-600 py-2 text-center">暂无材料</div>
+          <div className="text-xs text-muted-foreground py-2 text-center">暂无材料</div>
         )}
       </>
     );
@@ -218,36 +218,36 @@ export default function ProductDetail() {
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => navigate('/products')} className="text-gray-400 hover:text-white transition-colors">
+        <button onClick={() => navigate('/products')} className="text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft size={20} />
         </button>
         <h1 className="text-xl font-bold">{product.name}</h1>
-        <span className="text-gray-500 text-sm">{product.code}</span>
+        <span className="text-muted-foreground text-sm">{product.code}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Info + BOM */}
         <div className="lg:col-span-2 space-y-4">
           {/* Basic Info */}
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-4 space-y-3">
-            <h2 className="font-semibold text-sm text-gray-300">基本信息</h2>
+          <div className="bg-card rounded-lg border border-border p-4 space-y-3">
+            <h2 className="font-semibold text-sm text-foreground">基本信息</h2>
             <div className="grid grid-cols-2 gap-3">
-              <div><Label className="text-xs text-gray-400">编号</Label><Input value={product.code} onChange={(e) => updateField('code', e.target.value)} className="bg-gray-800 border-gray-700" /></div>
-              <div><Label className="text-xs text-gray-400">名称</Label><Input value={product.name} onChange={(e) => updateField('name', e.target.value)} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">编号</Label><Input value={product.code} onChange={(e) => updateField('code', e.target.value)} /></div>
+              <div><Label className="text-xs text-muted-foreground">名称</Label><Input value={product.name} onChange={(e) => updateField('name', e.target.value)} /></div>
             </div>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <Label className="text-xs text-gray-400">系列</Label>
+                <Label className="text-xs text-muted-foreground">系列</Label>
                 <Select value={product.series?._id || product.series || ''} onValueChange={(v) => updateField('series', v)}>
-                  <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue /></SelectTrigger>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>{seriesList.map((s) => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
-              <div><Label className="text-xs text-gray-400">定价 (¥)</Label><Input type="number" step="0.1" value={product.price} onChange={(e) => updateField('price', parseFloat(e.target.value) || 0)} className="bg-gray-800 border-gray-700" /></div>
-              <div><Label className="text-xs text-gray-400">佣金率 (%)</Label><Input type="number" step="0.1" value={(product.commissionRate * 100).toFixed(1)} onChange={(e) => updateField('commissionRate', parseFloat(e.target.value) / 100)} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">定价 (¥)</Label><Input type="number" step="0.1" value={product.price} onChange={(e) => updateField('price', parseFloat(e.target.value) || 0)} /></div>
+              <div><Label className="text-xs text-muted-foreground">佣金率 (%)</Label><Input type="number" step="0.1" value={(product.commissionRate * 100).toFixed(1)} onChange={(e) => updateField('commissionRate', parseFloat(e.target.value) / 100)} /></div>
             </div>
             <div>
-              <Label className="text-xs text-gray-400">款式</Label>
+              <Label className="text-xs text-muted-foreground">款式</Label>
               <div className="flex flex-wrap gap-2 mt-1">
                 {productStyles.map((s) => (
                   <button
@@ -260,8 +260,8 @@ export default function ProductDetail() {
                     }}
                     className={`px-3 py-1 rounded-full text-xs border transition-colors ${
                       product.styles.includes(s)
-                        ? 'bg-blue-600 border-blue-500 text-white'
-                        : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500'
+                        ? 'bg-primary border-primary text-primary-foreground'
+                        : 'bg-muted border-border text-muted-foreground hover:border-primary/40'
                     }`}
                   >
                     {s}
@@ -270,16 +270,16 @@ export default function ProductDetail() {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
-              <div><Label className="text-xs text-gray-400">几个装</Label><Input type="number" value={product.pieceCount} onChange={(e) => updateField('pieceCount', parseInt(e.target.value) || 1)} className="bg-gray-800 border-gray-700" /></div>
-              <div><Label className="text-xs text-gray-400">库存</Label><Input type="number" value={product.stock} onChange={(e) => updateField('stock', parseInt(e.target.value) || 0)} className="bg-gray-800 border-gray-700" /></div>
-              <div><Label className="text-xs text-gray-400">报警阈值</Label><Input type="number" value={product.stockAlertThreshold} onChange={(e) => updateField('stockAlertThreshold', parseInt(e.target.value) || 0)} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">几个装</Label><Input type="number" value={product.pieceCount} onChange={(e) => updateField('pieceCount', parseInt(e.target.value) || 1)} /></div>
+              <div><Label className="text-xs text-muted-foreground">库存</Label><Input type="number" value={product.stock} onChange={(e) => updateField('stock', parseInt(e.target.value) || 0)} /></div>
+              <div><Label className="text-xs text-muted-foreground">报警阈值</Label><Input type="number" value={product.stockAlertThreshold} onChange={(e) => updateField('stockAlertThreshold', parseInt(e.target.value) || 0)} /></div>
             </div>
           </div>
 
           {/* Components BOM */}
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
+          <div className="bg-card rounded-lg border border-border p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-sm text-gray-300 flex items-center gap-2">
+              <h2 className="font-semibold text-sm text-foreground flex items-center gap-2">
                 <Package size={14} /> BOM 组件清单
               </h2>
               <Button size="sm" variant="outline" onClick={addComponent} className="text-xs h-7">
@@ -288,24 +288,24 @@ export default function ProductDetail() {
             </div>
 
             {(product.components || []).length === 0 ? (
-              <div className="py-6 text-center text-gray-500 text-xs">
+              <div className="py-6 text-center text-muted-foreground text-xs">
                 暂无组件，点击上方按钮添加（如：雏菊珠、向日葵珠等）
               </div>
             ) : (
               <div className="space-y-4">
                 {product.components.map((comp, ci) => (
-                  <div key={comp._id || ci} className="bg-gray-800/40 rounded-lg p-3 border border-gray-800">
+                  <div key={comp._id || ci} className="bg-muted/40 rounded-lg p-3 border border-border">
                     <div className="flex items-center gap-2 mb-2">
                       <Input
                         value={comp.name}
                         onChange={(e) => updateComponentName(ci, e.target.value)}
-                        className="bg-gray-800 border-gray-700 text-sm h-7 w-48"
+                        className="text-sm h-7 w-48"
                         placeholder="组件名称"
                       />
-                      <span className="text-xs text-gray-500 flex-1">
+                      <span className="text-xs text-muted-foreground flex-1">
                         小计: ¥{comp.materials.reduce((s, item) => s + item.quantity * item.unitCost, 0).toFixed(4)}
                       </span>
-                      <button onClick={() => removeComponent(ci)} className="text-gray-500 hover:text-red-400 transition-colors">
+                      <button onClick={() => removeComponent(ci)} className="text-muted-foreground hover:text-red-400 transition-colors">
                         <Trash2 size={14} />
                       </button>
                     </div>
@@ -323,8 +323,8 @@ export default function ProductDetail() {
           </div>
 
           {/* Shared Materials */}
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
-            <h2 className="font-semibold text-sm text-gray-300 mb-3">共用材料（包装、配件等）</h2>
+          <div className="bg-card rounded-lg border border-border p-4">
+            <h2 className="font-semibold text-sm text-foreground mb-3">共用材料（包装、配件等）</h2>
             {renderBomTable(
               product.sharedMaterials || [],
               updateSharedMaterial,
@@ -336,27 +336,27 @@ export default function ProductDetail() {
 
           {/* Cost Summary */}
           {((product.components || []).length > 0 || (product.sharedMaterials || []).length > 0) && (
-            <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
-              <h2 className="font-semibold text-sm text-gray-300 mb-2">成本汇总</h2>
+            <div className="bg-card rounded-lg border border-border p-4">
+              <h2 className="font-semibold text-sm text-foreground mb-2">成本汇总</h2>
               <div className="space-y-1 text-sm">
                 {(product.components || []).map((comp, ci) => {
                   const cost = comp.materials.reduce((s, item) => s + item.quantity * item.unitCost, 0);
                   return (
-                    <div key={ci} className="flex justify-between text-gray-400">
+                    <div key={ci} className="flex justify-between text-muted-foreground">
                       <span>{comp.name}</span>
                       <span>¥{cost.toFixed(4)}</span>
                     </div>
                   );
                 })}
                 {sharedCost > 0 && (
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between text-muted-foreground">
                     <span>共用材料</span>
                     <span>¥{sharedCost.toFixed(4)}</span>
                   </div>
                 )}
-                <div className="flex justify-between font-bold border-t border-gray-700 pt-1">
-                  <span className="text-white">总成本</span>
-                  <span className="text-white">¥{totalCost.toFixed(4)}</span>
+                <div className="flex justify-between font-bold border-t border-border pt-1">
+                  <span className="text-foreground">总成本</span>
+                  <span className="text-foreground">¥{totalCost.toFixed(4)}</span>
                 </div>
               </div>
             </div>
@@ -365,24 +365,24 @@ export default function ProductDetail() {
 
         {/* Right: Image + Profit */}
         <div className="space-y-4">
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
-            <h2 className="font-semibold text-sm text-gray-300 mb-3">产品图片</h2>
+          <div className="bg-card rounded-lg border border-border p-4">
+            <h2 className="font-semibold text-sm text-foreground mb-3">产品图片</h2>
             <ImageUpload value={product.image} onChange={(url) => updateField('image', url)} />
           </div>
 
-          <div className="bg-gray-900 rounded-lg border border-gray-800 p-4 space-y-3">
-            <h2 className="font-semibold text-sm text-gray-300">利润计算</h2>
+          <div className="bg-card rounded-lg border border-border p-4 space-y-3">
+            <h2 className="font-semibold text-sm text-foreground">利润计算</h2>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-gray-400">定价</span><span>¥{product.price.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">总成本 ({(product.components || []).length}个组件)</span><span className="text-red-400">-¥{totalCost.toFixed(2)}</span></div>
-              <div className="border-t border-gray-800 pt-2 flex justify-between"><span className="text-gray-400">毛利润</span><span>¥{profit.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span className="text-gray-400">佣金 ({(product.commissionRate * 100).toFixed(1)}%)</span><span className="text-red-400">-¥{commission.toFixed(2)}</span></div>
-              <div className="border-t border-gray-700 pt-2 flex justify-between font-bold">
-                <span className="text-white">净利润</span>
+              <div className="flex justify-between"><span className="text-muted-foreground">定价</span><span>¥{product.price.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">总成本 ({(product.components || []).length}个组件)</span><span className="text-red-400">-¥{totalCost.toFixed(2)}</span></div>
+              <div className="border-t border-border pt-2 flex justify-between"><span className="text-muted-foreground">毛利润</span><span>¥{profit.toFixed(2)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">佣金 ({(product.commissionRate * 100).toFixed(1)}%)</span><span className="text-red-400">-¥{commission.toFixed(2)}</span></div>
+              <div className="border-t border-border pt-2 flex justify-between font-bold">
+                <span className="text-foreground">净利润</span>
                 <span className={netProfit >= 0 ? 'text-green-400' : 'text-red-400'}>¥{netProfit.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">利润率</span>
+                <span className="text-muted-foreground">利润率</span>
                 <span className={profitMargin >= 0 ? 'text-green-400' : 'text-red-400'}>{profitMargin.toFixed(1)}%</span>
               </div>
             </div>

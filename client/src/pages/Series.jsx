@@ -56,27 +56,27 @@ export default function Series() {
       </div>
 
       {seriesList.length === 0 ? (
-        <div className="bg-gray-900 rounded-lg border border-gray-800 p-12 text-center">
-          <p className="text-gray-500 mb-4">暂无系列，创建第一个产品系列</p>
+        <div className="bg-card rounded-lg border border-border p-12 text-center">
+          <p className="text-muted-foreground mb-4">暂无系列，创建第一个产品系列</p>
           <Button onClick={openNew} variant="outline">添加系列</Button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {seriesList.map((s) => (
-            <div key={s._id} className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden group hover:border-gray-600 transition-colors">
-              <div className="h-36 bg-gray-800">
-                {s.image ? <img src={s.image} alt={s.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-600">📦</div>}
+            <div key={s._id} className="bg-card rounded-lg border border-border overflow-hidden group hover:border-primary/40 transition-colors">
+              <div className="h-36 bg-muted">
+                {s.image ? <img src={s.image} alt={s.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground">📦</div>}
               </div>
               <div className="p-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-white">{s.name}</h3>
+                  <h3 className="font-semibold text-foreground">{s.name}</h3>
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => openEdit(s)} className="p-1 text-gray-400 hover:text-blue-400"><Pencil size={14} /></button>
-                    <button onClick={() => deleteItem(s._id)} className="p-1 text-gray-400 hover:text-red-400"><Trash2 size={14} /></button>
+                    <button onClick={() => openEdit(s)} className="p-1 text-muted-foreground hover:text-primary"><Pencil size={14} /></button>
+                    <button onClick={() => deleteItem(s._id)} className="p-1 text-muted-foreground hover:text-red-400"><Trash2 size={14} /></button>
                   </div>
                 </div>
-                {s.beadCategory && <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded mt-2 inline-block">{s.beadCategory}</span>}
-                {s.description && <p className="text-xs text-gray-500 mt-2">{s.description}</p>}
+                {s.beadCategory && <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded mt-2 inline-block">{s.beadCategory}</span>}
+                {s.description && <p className="text-xs text-muted-foreground mt-2">{s.description}</p>}
               </div>
             </div>
           ))}
@@ -84,20 +84,20 @@ export default function Series() {
       )}
 
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-md">
+        <DialogContent className="max-w-md">
           <DialogHeader><DialogTitle>{editItem?._id ? '编辑系列' : '添加系列'}</DialogTitle></DialogHeader>
           {editItem && (
             <div className="space-y-3">
               <ImageUpload value={editItem.image} onChange={(url) => setEditItem({ ...editItem, image: url })} />
-              <div><Label className="text-xs text-gray-400">系列名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">系列名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} /></div>
               <div>
-                <Label className="text-xs text-gray-400">珠子材质</Label>
+                <Label className="text-xs text-muted-foreground">珠子材质</Label>
                 <Select value={editItem.beadCategory} onValueChange={(v) => setEditItem({ ...editItem, beadCategory: v })}>
-                  <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue placeholder="选择材质" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder="选择材质" /></SelectTrigger>
                   <SelectContent>{beadCategories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
-              <div><Label className="text-xs text-gray-400">描述</Label><Input value={editItem.description} onChange={(e) => setEditItem({ ...editItem, description: e.target.value })} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">描述</Label><Input value={editItem.description} onChange={(e) => setEditItem({ ...editItem, description: e.target.value })} /></div>
             </div>
           )}
           <DialogFooter><Button onClick={saveItem}>保存</Button></DialogFooter>
