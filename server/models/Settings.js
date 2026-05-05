@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const settingsSchema = new mongoose.Schema({
   shopName: { type: String, default: 'LittleBeadsBeads' },
+  shopIcon: { type: String, default: '' },
   defaultCommissionRate: { type: Number, default: 0.057 },
   currency: { type: String, default: 'CNY' },
   materialCategories: { type: [String], default: ['主珠子', '配珠子', '五金件', '包材'] },

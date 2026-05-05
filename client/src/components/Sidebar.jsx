@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useSettings } from '@/lib/SettingsContext';
 import {
   LayoutDashboard, Package, Tags, Gift, ShoppingCart, ClipboardList, Settings, ChevronDown, Layers, GripVertical
 } from 'lucide-react';
@@ -87,6 +88,7 @@ function SortableNavItem({ item }) {
 
 export default function Sidebar() {
   const location = useLocation();
+  const { settings } = useSettings();
   const isProductSection = productPaths.some(
     (p) => location.pathname === p || location.pathname.startsWith(p + '/')
   );
@@ -110,7 +112,14 @@ export default function Sidebar() {
 
   return (
     <aside className="w-56 bg-card border-r border-border flex flex-col min-h-screen">
-      <div className="p-4 text-primary font-bold text-lg tracking-tight">🧶 LittleBeads</div>
+      <div className="p-4 font-bold text-lg tracking-tight flex items-center gap-2">
+        {settings?.shopIcon ? (
+          <img src={settings.shopIcon} alt="" className="w-7 h-7 rounded object-cover" />
+        ) : (
+          <span>🧶</span>
+        )}
+        <span className="text-primary truncate">{settings?.shopName || 'LittleBeads'}</span>
+      </div>
       <nav className="flex-1">
         {topItems.map((item) => (
           <NavItem key={item.to} {...item} />

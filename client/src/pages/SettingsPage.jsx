@@ -1,21 +1,27 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
+import { useSettings } from '@/lib/SettingsContext';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import ImageUpload from '@/components/ImageUpload';
 import TagManager from '@/components/TagManager';
 
 export default function SettingsPage() {
+  const { settings: globalSettings, setSettings: setGlobalSettings } = useSettings();
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => { api.getSettings().then(setSettings); }, []);
+  useEffect(() => {
+    api.getSettings().then(setSettings);
+  }, []);
 
   const save = async () => {
     setSaving(true);
     try {
       const updated = await api.updateSettings(settings);
       setSettings(updated);
+      setGlobalSettings(updated);
     } finally {
       setSaving(false);
     }
@@ -31,8 +37,19 @@ export default function SettingsPage() {
         <div className="bg-card rounded-lg p-4 border border-border space-y-4">
           <h2 className="font-semibold">基本信息</h2>
           <div>
+            <Label className="text-muted-foreground text-xs">店铺图标</Label>
+            <div className="mt-1">
+              <ImageUpload
+                value={settings.shopIcon || ''}
+                onChange={(url) => setSettings({ ...settings, shopIcon: url })}
+              />
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-1">显示在左上角，替代默认🧶图标</p>
+          </div>
+          <div>
             <Label className="text-muted-foreground text-xs">店铺名称</Label>
             <Input value={settings.shopName} onChange={(e) => setSettings({ ...settings, shopName: e.target.value })} />
+            <p className="text-[10px] text-muted-foreground mt-1">显示在左上角侧边栏</p>
           </div>
           <div>
             <Label className="text-muted-foreground text-xs">默认平台佣金率 (%)</Label>
