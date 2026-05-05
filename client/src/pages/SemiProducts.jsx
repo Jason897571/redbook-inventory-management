@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,8 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import ImageUpload from '@/components/ImageUpload';
 import { Plus } from 'lucide-react';
 
-export default function Products() {
-  const navigate = useNavigate();
+export default function SemiProducts() {
   const [products, setProducts] = useState([]);
   const [seriesList, setSeriesList] = useState([]);
   const [settings, setSettings] = useState(null);
@@ -20,7 +18,7 @@ export default function Products() {
 
   const load = async () => {
     const [prods, series, sets] = await Promise.all([
-      api.getProducts(),
+      api.getSemiProducts(),
       api.getSeries(),
       api.getSettings(),
     ]);
@@ -33,9 +31,8 @@ export default function Products() {
 
   const openNew = () => {
     setEditItem({
-      code: '', name: '', series: '', styles: [],
-      pieceCount: 1, price: 0, commissionRate: settings?.defaultCommissionRate || 0.057,
-      stockAlertThreshold: 5, image: '', stock: 0,
+      code: '', name: '', series: '',
+      price: 0, stock: 0, stockAlertThreshold: 5, image: '',
       components: [], sharedMaterials: [],
     });
     setShowForm(true);
@@ -43,24 +40,16 @@ export default function Products() {
 
   const saveItem = async () => {
     if (editItem._id) {
-      await api.updateProduct(editItem._id, editItem);
+      await api.updateSemiProduct(editItem._id, editItem);
     } else {
-      await api.createProduct(editItem);
+      await api.createSemiProduct(editItem);
     }
     setShowForm(false);
     setEditItem(null);
     load();
   };
 
-  const toggleStyle = (style) => {
-    if (!editItem) return;
-    const styles = editItem.styles.includes(style)
-      ? editItem.styles.filter((s) => s !== style)
-      : [...editItem.styles, style];
-    setEditItem({ ...editItem, styles });
-  };
-
-  // Group products by series
+  // Group by series
   const grouped = {};
   products.forEach((p) => {
     const key = p.series?._id || 'uncategorized';
@@ -68,19 +57,17 @@ export default function Products() {
     grouped[key].products.push(p);
   });
 
-  const productStyles = settings?.productStyles || [];
-
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold">成品管理</h1>
-        <Button onClick={openNew}><Plus size={16} className="mr-1" />添加产品</Button>
+        <h1 className="text-xl font-bold">半成品管理</h1>
+        <Button onClick={openNew}><Plus size={16} className="mr-1" />添加半成品</Button>
       </div>
 
       {Object.keys(grouped).length === 0 ? (
         <div className="bg-card rounded-lg border border-border p-12 text-center">
-          <p className="text-muted-foreground mb-4">暂无产品，先创建产品系列，再添加产品</p>
-          <Button onClick={openNew} variant="outline">添加产品</Button>
+          <p className="text-muted-foreground mb-4">暂无半成品</p>
+          <Button onClick={openNew} variant="outline">添加半成品</Button>
         </div>
       ) : (
         Object.entries(grouped).map(([key, { series, products: prods }]) => (
@@ -95,8 +82,7 @@ export default function Products() {
                 return (
                   <div
                     key={p._id}
-                    onClick={() => navigate(`/products/${p._id}`)}
-                    className="bg-card rounded-lg border border-border overflow-hidden cursor-pointer hover:border-primary/40 hover:shadow-lg transition-all group"
+                    className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all group"
                   >
                     <div className="h-32 bg-muted">
                       {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground text-2xl">🧶</div>}
@@ -107,12 +93,8 @@ export default function Products() {
                         <span className={`text-xs ${isLow ? 'text-red-400' : 'text-muted-foreground'}`}>库存: {p.stock}</span>
                       </div>
                       <h3 className="font-medium text-foreground text-sm">{p.name}</h3>
-                      <div className="flex flex-wrap gap-1">
-                        {p.styles.map((s) => <Badge key={s} variant="secondary" className="text-[10px]">{s}</Badge>)}
-                      </div>
                       <div className="flex items-center justify-between text-xs pt-1 border-t border-border">
                         <span className="text-muted-foreground">¥{p.price}</span>
-                        <span className="text-green-400">净利 ¥{p.netProfit?.toFixed(2) || '0.00'} ({((p.profitMargin || 0) * 100).toFixed(0)}%)</span>
                       </div>
                     </div>
                   </div>
@@ -123,16 +105,16 @@ export default function Products() {
         ))
       )}
 
-      {/* Create Dialog */}
+      {/* Create/Edit Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>添加产品</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editItem?._id ? '编辑半成品' : '添加半成品'}</DialogTitle></DialogHeader>
           {editItem && (
             <div className="space-y-3">
               <ImageUpload value={editItem.image} onChange={(url) => setEditItem({ ...editItem, image: url })} />
               <div className="grid grid-cols-2 gap-3">
-                <div><Label className="text-xs text-muted-foreground">产品编号</Label><Input value={editItem.code} onChange={(e) => setEditItem({ ...editItem, code: e.target.value })} placeholder="如 C1, P1" /></div>
-                <div><Label className="text-xs text-muted-foreground">产品名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} /></div>
+                <div><Label className="text-xs text-muted-foreground">编号</Label><Input value={editItem.code} onChange={(e) => setEditItem({ ...editItem, code: e.target.value })} placeholder="如 S1, SP1" /></div>
+                <div><Label className="text-xs text-muted-foreground">名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} /></div>
               </div>
               <div>
                 <Label className="text-xs text-muted-foreground">所属系列</Label>
@@ -141,30 +123,8 @@ export default function Products() {
                   <SelectContent>{seriesList.map((s) => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label className="text-xs text-muted-foreground">款式</Label>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {productStyles.map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => toggleStyle(s)}
-                      className={`px-3 py-1 rounded-full text-xs border transition-colors ${
-                        editItem.styles.includes(s)
-                          ? 'bg-primary border-primary text-primary-foreground'
-                          : 'bg-muted border-border text-muted-foreground hover:border-primary/40'
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </div>
-              </div>
               <div className="grid grid-cols-3 gap-3">
-                <div><Label className="text-xs text-muted-foreground">几个装</Label><Input type="number" value={editItem.pieceCount} onChange={(e) => setEditItem({ ...editItem, pieceCount: parseInt(e.target.value) || 1 })} /></div>
                 <div><Label className="text-xs text-muted-foreground">定价 (¥)</Label><Input type="number" step="0.1" value={editItem.price} onChange={(e) => setEditItem({ ...editItem, price: parseFloat(e.target.value) || 0 })} /></div>
-                <div><Label className="text-xs text-muted-foreground">佣金率 (%)</Label><Input type="number" step="0.1" value={(editItem.commissionRate * 100).toFixed(1)} onChange={(e) => setEditItem({ ...editItem, commissionRate: parseFloat(e.target.value) / 100 })} /></div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
                 <div><Label className="text-xs text-muted-foreground">初始库存</Label><Input type="number" value={editItem.stock} onChange={(e) => setEditItem({ ...editItem, stock: parseInt(e.target.value) || 0 })} /></div>
                 <div><Label className="text-xs text-muted-foreground">库存报警阈值</Label><Input type="number" value={editItem.stockAlertThreshold} onChange={(e) => setEditItem({ ...editItem, stockAlertThreshold: parseInt(e.target.value) || 0 })} /></div>
               </div>

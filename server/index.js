@@ -20,6 +20,7 @@ app.use('/api/settings', require('./routes/settings'));
 app.use('/api/materials', require('./routes/materials'));
 app.use('/api/series', require('./routes/series'));
 app.use('/api/products', require('./routes/products'));
+app.use('/api/semi-products', require('./routes/semiProducts'));
 app.use('/api/sales', require('./routes/sales'));
 app.use('/api/stock-logs', require('./routes/stockLogs'));
 app.use('/api/dashboard', require('./routes/dashboard'));

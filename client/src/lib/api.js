@@ -44,6 +44,16 @@ export const api = {
   updateProduct: (id, data) => request(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteProduct: (id) => request(`/products/${id}`, { method: 'DELETE' }),
 
+  // Semi-Products
+  getSemiProducts: (params) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/semi-products${query ? '?' + query : ''}`);
+  },
+  getSemiProduct: (id) => request(`/semi-products/${id}`),
+  createSemiProduct: (data) => request('/semi-products', { method: 'POST', body: JSON.stringify(data) }),
+  updateSemiProduct: (id, data) => request(`/semi-products/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteSemiProduct: (id) => request(`/semi-products/${id}`, { method: 'DELETE' }),
+
   // Sales
   getSales: (params) => {
     const query = new URLSearchParams(params).toString();
