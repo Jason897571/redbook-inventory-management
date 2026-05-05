@@ -4,7 +4,7 @@ import Dashboard from './pages/Dashboard';
 import Materials from './pages/Materials';
 import Series from './pages/Series';
 import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
+import ProductEdit from './pages/ProductEdit';
 import SemiProducts from './pages/SemiProducts';
 import SemiProductEdit from './pages/SemiProductEdit';
 import Sales from './pages/Sales';
@@ -19,7 +19,8 @@ export default function App() {
         <Route path="/materials" element={<Materials />} />
         <Route path="/series" element={<Series />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/products/new" element={<ProductEdit />} />
+        <Route path="/products/:id/edit" element={<ProductEdit />} />
         <Route path="/semi-products" element={<SemiProducts />} />
         <Route path="/semi-products/new" element={<SemiProductEdit />} />
         <Route path="/semi-products/:id/edit" element={<SemiProductEdit />} />
