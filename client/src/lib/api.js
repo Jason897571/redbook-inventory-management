@@ -35,10 +35,7 @@ export const api = {
   deleteSeries: (id) => request(`/series/${id}`, { method: 'DELETE' }),
 
   // Products
-  getProducts: (params) => {
-    const query = new URLSearchParams(params).toString();
-    return request(`/products${query ? '?' + query : ''}`);
-  },
+  getProducts: () => request('/products'),
   getProduct: (id) => request(`/products/${id}`),
   createProduct: (data) => request('/products', { method: 'POST', body: JSON.stringify(data) }),
   updateProduct: (id, data) => request(`/products/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
