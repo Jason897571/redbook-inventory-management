@@ -216,6 +216,7 @@ export default function ProductEdit() {
   const [saving, setSaving] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [activeDragId, setActiveDragId] = useState(null);
+  const [productSeries, setProductSeries] = useState([]);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
@@ -240,6 +241,7 @@ export default function ProductEdit() {
             .filter((e) => e.semiProduct)
             .map((e) => ({ semiProduct: e.semiProduct, quantity: e.quantity }))
         );
+        setProductSeries(p.series || []);
       });
     }
   }, [id, isNew]);
@@ -438,6 +440,22 @@ export default function ProductEdit() {
           </div>
         </div>
       </div>
+
+      {!isNew && productSeries.length > 0 && (
+        <div className="bg-card rounded-lg border border-border p-4 mb-6">
+          <Label className="text-xs text-muted-foreground">所属系列</Label>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {productSeries.map((s) => (
+              <span
+                key={s._id}
+                className="px-3 py-1 rounded-full text-xs bg-muted border border-border text-muted-foreground"
+              >
+                {s.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Drag and drop area */}
       <DndContext
