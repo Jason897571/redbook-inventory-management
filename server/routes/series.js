@@ -2,9 +2,13 @@ const express = require('express');
 const router = express.Router();
 const ProductSeries = require('../models/ProductSeries');
 
+const populateProducts = { path: 'products', select: 'code name images' };
+
 router.get('/', async (req, res) => {
   try {
-    const series = await ProductSeries.find().sort({ name: 1 });
+    const series = await ProductSeries.find()
+      .populate(populateProducts)
+      .sort({ name: 1 });
     res.json(series);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -13,7 +17,8 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const series = await ProductSeries.findById(req.params.id);
+    const series = await ProductSeries.findById(req.params.id)
+      .populate(populateProducts);
     if (!series) return res.status(404).json({ error: 'Series not found' });
     res.json(series);
   } catch (err) {
@@ -24,7 +29,8 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const series = await ProductSeries.create(req.body);
-    res.status(201).json(series);
+    const populated = await ProductSeries.findById(series._id).populate(populateProducts);
+    res.status(201).json(populated);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -32,7 +38,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const series = await ProductSeries.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const series = await ProductSeries.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+      .populate(populateProducts);
     if (!series) return res.status(404).json({ error: 'Series not found' });
     res.json(series);
   } catch (err) {
