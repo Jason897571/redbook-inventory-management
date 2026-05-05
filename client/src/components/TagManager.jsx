@@ -20,15 +20,15 @@ export default function TagManager({ label, tags, onChange }) {
 
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium text-white">{label}</label>
+      <label className="text-sm font-medium text-foreground">{label}</label>
       <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
           <span
             key={tag}
-            className="flex items-center gap-1 bg-gray-800 text-gray-300 px-3 py-1 rounded-full text-xs"
+            className="flex items-center gap-1 bg-muted text-foreground px-3 py-1 rounded-full text-xs"
           >
             {tag}
-            <button onClick={() => removeTag(tag)} className="text-gray-500 hover:text-red-400 transition-colors">
+            <button onClick={() => removeTag(tag)} className="text-muted-foreground hover:text-red-400 transition-colors">
               <X size={12} />
             </button>
           </span>
@@ -40,7 +40,7 @@ export default function TagManager({ label, tags, onChange }) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && addTag()}
           placeholder={`添加${label}...`}
-          className="bg-gray-800 border-gray-700 text-sm"
+          className="text-sm"
         />
         <Button onClick={addTag} size="sm">添加</Button>
       </div>

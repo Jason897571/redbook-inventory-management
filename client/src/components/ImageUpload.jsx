@@ -14,13 +14,13 @@ export default function ImageUpload({ value, onChange }) {
 
   return (
     <div
-      className="relative w-full h-32 bg-gray-800 rounded-lg border border-gray-700 flex items-center justify-center cursor-pointer overflow-hidden hover:border-gray-500 transition-colors"
+      className="relative w-full h-32 bg-muted rounded-lg border border-border flex items-center justify-center cursor-pointer overflow-hidden hover:border-primary/40 transition-colors"
       onClick={() => inputRef.current.click()}
     >
       {value ? (
         <img src={value} alt="" className="w-full h-full object-cover" />
       ) : (
-        <div className="text-gray-500 text-center">
+        <div className="text-muted-foreground text-center">
           <Upload size={24} className="mx-auto mb-1" />
           <span className="text-xs">点击上传</span>
         </div>
