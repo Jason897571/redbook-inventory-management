@@ -28,7 +28,7 @@ export default function StockLogs() {
 
       <div className="flex gap-3">
         <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-36 bg-gray-900 border-gray-700"><SelectValue placeholder="类型: 全部" /></SelectTrigger>
+          <SelectTrigger className="w-36"><SelectValue placeholder="类型: 全部" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部</SelectItem>
             <SelectItem value="material">材料</SelectItem>
@@ -36,7 +36,7 @@ export default function StockLogs() {
           </SelectContent>
         </Select>
         <Select value={changeTypeFilter} onValueChange={setChangeTypeFilter}>
-          <SelectTrigger className="w-36 bg-gray-900 border-gray-700"><SelectValue placeholder="变动: 全部" /></SelectTrigger>
+          <SelectTrigger className="w-36"><SelectValue placeholder="变动: 全部" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部</SelectItem>
             {changeTypes.map((ct) => <SelectItem key={ct} value={ct}>{ct}</SelectItem>)}
@@ -44,10 +44,10 @@ export default function StockLogs() {
         </Select>
       </div>
 
-      <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-800/50 text-gray-400 text-xs">
+            <tr className="bg-muted/50 text-muted-foreground text-xs">
               <th className="p-3 text-left">日期</th>
               <th className="p-3 text-left">类型</th>
               <th className="p-3 text-left">名称</th>
@@ -58,23 +58,23 @@ export default function StockLogs() {
           </thead>
           <tbody>
             {logs.map((log) => (
-              <tr key={log._id} className="border-t border-gray-800 hover:bg-gray-800/30 transition-colors">
-                <td className="p-3 text-gray-400">{new Date(log.date).toLocaleString('zh-CN')}</td>
+              <tr key={log._id} className="border-t border-border hover:bg-muted/30 transition-colors">
+                <td className="p-3 text-muted-foreground">{new Date(log.date).toLocaleString('zh-CN')}</td>
                 <td className="p-3">
                   <Badge variant={log.type === 'material' ? 'secondary' : 'outline'}>
                     {log.type === 'material' ? '材料' : '产品'}
                   </Badge>
                 </td>
-                <td className="p-3 text-white">{log.targetName}</td>
-                <td className="p-3 text-gray-400">{log.changeType}</td>
+                <td className="p-3 text-foreground">{log.targetName}</td>
+                <td className="p-3 text-muted-foreground">{log.changeType}</td>
                 <td className={`p-3 text-right font-medium ${log.quantity > 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {log.quantity > 0 ? '+' : ''}{log.quantity}
                 </td>
-                <td className="p-3 text-gray-500">{log.note}</td>
+                <td className="p-3 text-muted-foreground">{log.note}</td>
               </tr>
             ))}
             {logs.length === 0 && (
-              <tr><td colSpan={6} className="p-8 text-center text-gray-500">暂无日志记录</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-muted-foreground">暂无日志记录</td></tr>
             )}
           </tbody>
         </table>

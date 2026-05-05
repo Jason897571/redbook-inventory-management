@@ -68,13 +68,13 @@ export default function Sales() {
       <h1 className="text-xl font-bold">销售记录</h1>
 
       {/* Quick Add */}
-      <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
-        <h2 className="text-sm font-medium text-gray-300 mb-3 flex items-center gap-2"><ShoppingCart size={16} /> 快速录入</h2>
+      <div className="bg-card rounded-lg border border-border p-4">
+        <h2 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2"><ShoppingCart size={16} /> 快速录入</h2>
         <div className="flex items-end gap-3 flex-wrap">
           <div className="flex-1 min-w-[200px]">
-            <Label className="text-xs text-gray-400">产品</Label>
+            <Label className="text-xs text-muted-foreground">产品</Label>
             <Select value={selectedProduct} onValueChange={(v) => { setSelectedProduct(v); setSelectedStyle(''); }}>
-              <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue placeholder="选择产品" /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder="选择产品" /></SelectTrigger>
               <SelectContent>
                 {products.map((p) => (
                   <SelectItem key={p._id} value={p._id}>{p.name} (¥{p.price})</SelectItem>
@@ -84,9 +84,9 @@ export default function Sales() {
           </div>
           {selectedProductData?.styles?.length > 0 && (
             <div className="w-32">
-              <Label className="text-xs text-gray-400">款式</Label>
+              <Label className="text-xs text-muted-foreground">款式</Label>
               <Select value={selectedStyle} onValueChange={setSelectedStyle}>
-                <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue placeholder="选款式" /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="选款式" /></SelectTrigger>
                 <SelectContent>
                   {selectedProductData.styles.map((s) => (
                     <SelectItem key={s} value={s}>{s}</SelectItem>
@@ -96,12 +96,12 @@ export default function Sales() {
             </div>
           )}
           <div className="w-20">
-            <Label className="text-xs text-gray-400">数量</Label>
-            <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="bg-gray-800 border-gray-700" />
+            <Label className="text-xs text-muted-foreground">数量</Label>
+            <Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(e.target.value)} />
           </div>
           <div className="w-36">
-            <Label className="text-xs text-gray-400">备注</Label>
-            <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="选填" className="bg-gray-800 border-gray-700" />
+            <Label className="text-xs text-muted-foreground">备注</Label>
+            <Input value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="选填" />
           </div>
           <Button onClick={createSale} disabled={!selectedProduct}>记录销售</Button>
         </div>
@@ -117,10 +117,10 @@ export default function Sales() {
       </div>
 
       {/* Sales Table */}
-      <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-800/50 text-gray-400 text-xs">
+            <tr className="bg-muted/50 text-muted-foreground text-xs">
               <th className="p-3 text-left">日期</th>
               <th className="p-3 text-left">产品</th>
               <th className="p-3 text-left">款式</th>
@@ -133,13 +133,13 @@ export default function Sales() {
           </thead>
           <tbody>
             {sales.map((s) => (
-              <tr key={s._id} className="border-t border-gray-800 hover:bg-gray-800/30 transition-colors">
-                <td className="p-3 text-gray-400">{new Date(s.date).toLocaleDateString('zh-CN')}</td>
-                <td className="p-3 text-white">{s.product?.name || '-'}</td>
-                <td className="p-3 text-gray-400">{s.style || '-'}</td>
+              <tr key={s._id} className="border-t border-border hover:bg-muted/30 transition-colors">
+                <td className="p-3 text-muted-foreground">{new Date(s.date).toLocaleDateString('zh-CN')}</td>
+                <td className="p-3 text-foreground">{s.product?.name || '-'}</td>
+                <td className="p-3 text-muted-foreground">{s.style || '-'}</td>
                 <td className="p-3 text-right">{s.quantity}</td>
                 <td className="p-3 text-right">¥{s.salePrice}</td>
-                <td className="p-3 text-right text-gray-400">¥{s.cost?.toFixed(2)}</td>
+                <td className="p-3 text-right text-muted-foreground">¥{s.cost?.toFixed(2)}</td>
                 <td className="p-3 text-right text-green-400">¥{(s.netProfit * s.quantity).toFixed(2)}</td>
                 <td className="p-3 text-center">
                   <button onClick={() => deleteSale(s._id)} className="text-red-400 hover:underline text-xs">删除</button>
@@ -147,20 +147,20 @@ export default function Sales() {
               </tr>
             ))}
             {sales.length === 0 && (
-              <tr><td colSpan={8} className="p-8 text-center text-gray-500">暂无销售记录</td></tr>
+              <tr><td colSpan={8} className="p-8 text-center text-muted-foreground">暂无销售记录</td></tr>
             )}
           </tbody>
         </table>
       </div>
 
       {/* Summary */}
-      <div className="bg-gray-900 rounded-lg border border-gray-800 p-4 flex items-center justify-between">
-        <div className="text-sm text-gray-400">
-          共 <span className="text-white font-medium">{summary.totalOrders}</span> 笔订单
+      <div className="bg-card rounded-lg border border-border p-4 flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          共 <span className="text-foreground font-medium">{summary.totalOrders}</span> 笔订单
         </div>
         <div className="flex gap-6 text-sm">
-          <span className="text-gray-400">销售额: <span className="text-white font-medium">¥{summary.totalRevenue.toFixed(2)}</span></span>
-          <span className="text-gray-400">净利润: <span className="text-green-400 font-medium">¥{summary.totalProfit.toFixed(2)}</span></span>
+          <span className="text-muted-foreground">销售额: <span className="text-foreground font-medium">¥{summary.totalRevenue.toFixed(2)}</span></span>
+          <span className="text-muted-foreground">净利润: <span className="text-green-400 font-medium">¥{summary.totalProfit.toFixed(2)}</span></span>
         </div>
       </div>
     </div>
