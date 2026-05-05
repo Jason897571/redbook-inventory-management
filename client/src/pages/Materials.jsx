@@ -81,14 +81,14 @@ export default function Materials() {
         {categories.map((c) => (
           <Button key={c} variant={filter === c ? 'default' : 'outline'} size="sm" onClick={() => setFilter(c)}>{c}</Button>
         ))}
-        <Input placeholder="搜索材料名称..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-48 bg-gray-900 border-gray-700 text-sm ml-auto" />
+        <Input placeholder="搜索材料名称..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-48 text-sm ml-auto" />
       </div>
 
       {/* Table */}
-      <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-gray-800/50 text-gray-400 text-xs">
+            <tr className="bg-muted/50 text-muted-foreground text-xs">
               <th className="p-3 text-left">图片</th>
               <th className="p-3 text-left">名称</th>
               <th className="p-3 text-left">分类</th>
@@ -103,13 +103,13 @@ export default function Materials() {
             {materials.map((m) => {
               const isLow = m.stock <= m.stockAlertThreshold;
               return (
-                <tr key={m._id} className={`border-t border-gray-800 transition-colors hover:bg-gray-800/30 ${isLow ? 'bg-red-950/20' : ''}`}>
+                <tr key={m._id} className={`border-t border-border transition-colors hover:bg-muted/30 ${isLow ? 'bg-red-950/20' : ''}`}>
                   <td className="p-3">
-                    <div className="w-9 h-9 bg-gray-800 rounded overflow-hidden">
-                      {m.image ? <img src={m.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">无</div>}
+                    <div className="w-9 h-9 bg-muted rounded overflow-hidden">
+                      {m.image ? <img src={m.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">无</div>}
                     </div>
                   </td>
-                  <td className="p-3 text-white">{m.name}</td>
+                  <td className="p-3 text-foreground">{m.name}</td>
                   <td className="p-3"><Badge variant="secondary">{m.category}</Badge></td>
                   <td className="p-3 text-right">¥{m.unitPrice.toFixed(4)}</td>
                   <td className={`p-3 text-right font-medium ${isLow ? 'text-red-400' : ''}`}>{m.stock}</td>
@@ -118,21 +118,21 @@ export default function Materials() {
                   </td>
                   <td className="p-3">
                     {m.purchaseLink && (
-                      <a href={m.purchaseLink} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline inline-flex items-center gap-1 text-xs">
+                      <a href={m.purchaseLink} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-1 text-xs">
                         链接 <ExternalLink size={12} />
                       </a>
                     )}
                   </td>
                   <td className="p-3 text-center space-x-2 text-xs">
-                    <button onClick={() => openEdit(m)} className="text-blue-400 hover:underline">编辑</button>
-                    <button onClick={() => setStockInItem(m)} className={isLow ? 'text-yellow-400 hover:underline' : 'text-gray-500 hover:underline'}>进货</button>
+                    <button onClick={() => openEdit(m)} className="text-primary hover:underline">编辑</button>
+                    <button onClick={() => setStockInItem(m)} className={isLow ? 'text-yellow-400 hover:underline' : 'text-muted-foreground hover:underline'}>进货</button>
                     <button onClick={() => deleteItem(m._id)} className="text-red-400 hover:underline">删除</button>
                   </td>
                 </tr>
               );
             })}
             {materials.length === 0 && (
-              <tr><td colSpan={8} className="p-8 text-center text-gray-500">暂无材料，点击「添加材料」开始</td></tr>
+              <tr><td colSpan={8} className="p-8 text-center text-muted-foreground">暂无材料，点击「添加材料」开始</td></tr>
             )}
           </tbody>
         </table>
@@ -140,38 +140,38 @@ export default function Materials() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-lg">
+        <DialogContent className="max-w-lg">
           <DialogHeader><DialogTitle>{editItem?._id ? '编辑材料' : '添加材料'}</DialogTitle></DialogHeader>
           {editItem && (
             <div className="space-y-3">
               <ImageUpload value={editItem.image} onChange={(url) => setEditItem({ ...editItem, image: url })} />
-              <div><Label className="text-xs text-gray-400">名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">名称</Label><Input value={editItem.name} onChange={(e) => setEditItem({ ...editItem, name: e.target.value })} /></div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label className="text-xs text-gray-400">分类</Label>
+                  <Label className="text-xs text-muted-foreground">分类</Label>
                   <Select value={editItem.category} onValueChange={(v) => setEditItem({ ...editItem, category: v })}>
-                    <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue placeholder="选择分类" /></SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder="选择分类" /></SelectTrigger>
                     <SelectContent>{categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label className="text-xs text-gray-400">单位</Label>
+                  <Label className="text-xs text-muted-foreground">单位</Label>
                   <Select value={editItem.unit} onValueChange={(v) => setEditItem({ ...editItem, unit: v })}>
-                    <SelectTrigger className="bg-gray-800 border-gray-700"><SelectValue /></SelectTrigger>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>{(settings?.materialUnits || []).map((u) => <SelectItem key={u} value={u}>{u}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><Label className="text-xs text-gray-400">单价</Label><Input type="number" step="0.0001" value={editItem.unitPrice} onChange={(e) => setEditItem({ ...editItem, unitPrice: parseFloat(e.target.value) || 0 })} className="bg-gray-800 border-gray-700" /></div>
-                <div><Label className="text-xs text-gray-400">单价公式</Label><Input value={editItem.unitPriceFormula} onChange={(e) => setEditItem({ ...editItem, unitPriceFormula: e.target.value })} placeholder="如 =13.2/20" className="bg-gray-800 border-gray-700" /></div>
+                <div><Label className="text-xs text-muted-foreground">单价</Label><Input type="number" step="0.0001" value={editItem.unitPrice} onChange={(e) => setEditItem({ ...editItem, unitPrice: parseFloat(e.target.value) || 0 })} /></div>
+                <div><Label className="text-xs text-muted-foreground">单价公式</Label><Input value={editItem.unitPriceFormula} onChange={(e) => setEditItem({ ...editItem, unitPriceFormula: e.target.value })} placeholder="如 =13.2/20" /></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><Label className="text-xs text-gray-400">库存</Label><Input type="number" value={editItem.stock} onChange={(e) => setEditItem({ ...editItem, stock: parseInt(e.target.value) || 0 })} className="bg-gray-800 border-gray-700" /></div>
-                <div><Label className="text-xs text-gray-400">报警阈值</Label><Input type="number" value={editItem.stockAlertThreshold} onChange={(e) => setEditItem({ ...editItem, stockAlertThreshold: parseInt(e.target.value) || 0 })} className="bg-gray-800 border-gray-700" /></div>
+                <div><Label className="text-xs text-muted-foreground">库存</Label><Input type="number" value={editItem.stock} onChange={(e) => setEditItem({ ...editItem, stock: parseInt(e.target.value) || 0 })} /></div>
+                <div><Label className="text-xs text-muted-foreground">报警阈值</Label><Input type="number" value={editItem.stockAlertThreshold} onChange={(e) => setEditItem({ ...editItem, stockAlertThreshold: parseInt(e.target.value) || 0 })} /></div>
               </div>
-              <div><Label className="text-xs text-gray-400">购买链接</Label><Input value={editItem.purchaseLink} onChange={(e) => setEditItem({ ...editItem, purchaseLink: e.target.value })} className="bg-gray-800 border-gray-700" /></div>
-              <div><Label className="text-xs text-gray-400">备注</Label><Input value={editItem.notes} onChange={(e) => setEditItem({ ...editItem, notes: e.target.value })} className="bg-gray-800 border-gray-700" /></div>
+              <div><Label className="text-xs text-muted-foreground">购买链接</Label><Input value={editItem.purchaseLink} onChange={(e) => setEditItem({ ...editItem, purchaseLink: e.target.value })} /></div>
+              <div><Label className="text-xs text-muted-foreground">备注</Label><Input value={editItem.notes} onChange={(e) => setEditItem({ ...editItem, notes: e.target.value })} /></div>
             </div>
           )}
           <DialogFooter><Button onClick={saveItem}>保存</Button></DialogFooter>
@@ -180,11 +180,11 @@ export default function Materials() {
 
       {/* Stock In Dialog */}
       <Dialog open={!!stockInItem} onOpenChange={() => setStockInItem(null)}>
-        <DialogContent className="bg-gray-900 border-gray-800 max-w-sm">
+        <DialogContent className="max-w-sm">
           <DialogHeader><DialogTitle>进货 — {stockInItem?.name}</DialogTitle></DialogHeader>
           <div className="space-y-3">
-            <div><Label className="text-xs text-gray-400">进货数量</Label><Input type="number" value={stockQty} onChange={(e) => setStockQty(e.target.value)} className="bg-gray-800 border-gray-700" /></div>
-            <div><Label className="text-xs text-gray-400">备注</Label><Input value={stockNote} onChange={(e) => setStockNote(e.target.value)} placeholder="如 1688进货" className="bg-gray-800 border-gray-700" /></div>
+            <div><Label className="text-xs text-muted-foreground">进货数量</Label><Input type="number" value={stockQty} onChange={(e) => setStockQty(e.target.value)} /></div>
+            <div><Label className="text-xs text-muted-foreground">备注</Label><Input value={stockNote} onChange={(e) => setStockNote(e.target.value)} placeholder="如 1688进货" /></div>
           </div>
           <DialogFooter><Button onClick={doStockIn} disabled={!stockQty}>确认进货</Button></DialogFooter>
         </DialogContent>

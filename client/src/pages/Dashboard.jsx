@@ -11,7 +11,7 @@ export default function Dashboard() {
     api.getDashboard().then(setData).catch(console.error);
   }, []);
 
-  if (!data) return <div className="text-gray-400">加载中...</div>;
+  if (!data) return <div className="text-muted-foreground">加载中...</div>;
 
   return (
     <div className="space-y-6">
@@ -29,14 +29,14 @@ export default function Dashboard() {
         <AlertList title="⚠️ 成品库存报警" items={data.productAlerts} />
       </div>
 
-      <div className="bg-gray-900 rounded-lg border border-gray-800 p-4">
-        <h3 className="text-sm font-medium mb-3 text-gray-300">最近销售</h3>
+      <div className="bg-card rounded-lg border border-border p-4">
+        <h3 className="text-sm font-medium mb-3 text-foreground">最近销售</h3>
         {data.recentSales.length === 0 ? (
-          <p className="text-gray-500 text-sm py-4 text-center">暂无销售记录</p>
+          <p className="text-muted-foreground text-sm py-4 text-center">暂无销售记录</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-gray-500 text-xs">
+              <tr className="text-muted-foreground text-xs">
                 <th className="pb-2 text-left">日期</th>
                 <th className="pb-2 text-left">产品</th>
                 <th className="pb-2 text-right">数量</th>
@@ -46,8 +46,8 @@ export default function Dashboard() {
             </thead>
             <tbody>
               {data.recentSales.map((s) => (
-                <tr key={s._id} className="border-t border-gray-800">
-                  <td className="py-2 text-gray-400">{new Date(s.date).toLocaleDateString('zh-CN')}</td>
+                <tr key={s._id} className="border-t border-border">
+                  <td className="py-2 text-muted-foreground">{new Date(s.date).toLocaleDateString('zh-CN')}</td>
                   <td className="py-2">{s.product?.name || '-'}</td>
                   <td className="py-2 text-right">{s.quantity}</td>
                   <td className="py-2 text-right">¥{s.salePrice}</td>
