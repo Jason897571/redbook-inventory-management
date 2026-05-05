@@ -36,6 +36,7 @@ export default function Products() {
       code: '', name: '', series: '', styles: [],
       pieceCount: 1, price: 0, commissionRate: settings?.defaultCommissionRate || 0.057,
       stockAlertThreshold: 5, image: '', stock: 0,
+      components: [], sharedMaterials: [],
     });
     setShowForm(true);
   };

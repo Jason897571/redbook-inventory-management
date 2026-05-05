@@ -9,7 +9,8 @@ router.get('/', async (req, res) => {
     if (series) filter.series = series;
     const products = await Product.find(filter)
       .populate('series')
-      .populate('materials.material')
+      .populate('components.materials.material')
+      .populate('sharedMaterials.material')
       .sort({ code: 1 });
     res.json(products);
   } catch (err) {
@@ -21,7 +22,8 @@ router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
       .populate('series')
-      .populate('materials.material');
+      .populate('components.materials.material')
+      .populate('sharedMaterials.material');
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {
@@ -34,7 +36,8 @@ router.post('/', async (req, res) => {
     const product = await Product.create(req.body);
     const populated = await Product.findById(product._id)
       .populate('series')
-      .populate('materials.material');
+      .populate('components.materials.material')
+      .populate('sharedMaterials.material');
     res.status(201).json(populated);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -45,7 +48,8 @@ router.put('/:id', async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
       .populate('series')
-      .populate('materials.material');
+      .populate('components.materials.material')
+      .populate('sharedMaterials.material');
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
   } catch (err) {

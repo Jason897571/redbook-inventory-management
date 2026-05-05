@@ -6,6 +6,11 @@ const bomItemSchema = new mongoose.Schema({
   unitCost: { type: Number, required: true, default: 0 },
 }, { _id: false });
 
+const componentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  materials: [bomItemSchema],
+}, { _id: true });
+
 const productSchema = new mongoose.Schema({
   code: { type: String, required: true, unique: true },
   name: { type: String, required: true },
@@ -17,11 +22,16 @@ const productSchema = new mongoose.Schema({
   image: { type: String, default: '' },
   stock: { type: Number, default: 0 },
   stockAlertThreshold: { type: Number, default: 5 },
-  materials: [bomItemSchema],
+  components: [componentSchema],
+  sharedMaterials: [bomItemSchema],
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 productSchema.virtual('totalCost').get(function () {
-  return this.materials.reduce((sum, item) => sum + item.quantity * item.unitCost, 0);
+  const componentsCost = (this.components || []).reduce((sum, comp) =>
+    sum + comp.materials.reduce((s, item) => s + item.quantity * item.unitCost, 0), 0);
+  const sharedCost = (this.sharedMaterials || []).reduce((sum, item) =>
+    sum + item.quantity * item.unitCost, 0);
+  return componentsCost + sharedCost;
 });
 
 productSchema.virtual('profit').get(function () {

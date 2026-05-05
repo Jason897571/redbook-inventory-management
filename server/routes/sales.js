@@ -60,11 +60,16 @@ router.post('/', async (req, res) => {
   try {
     const { product: productId, style, quantity, notes } = req.body;
     const product = await Product.findById(productId)
-      .populate('materials.material');
+      .populate('components.materials.material')
+      .populate('sharedMaterials.material');
     if (!product) return res.status(404).json({ error: 'Product not found' });
 
     // Calculate cost snapshot
-    const totalCost = product.materials.reduce((sum, item) => sum + item.quantity * item.unitCost, 0);
+    const componentsCost = (product.components || []).reduce((sum, comp) =>
+      sum + comp.materials.reduce((s, item) => s + item.quantity * item.unitCost, 0), 0);
+    const sharedCost = (product.sharedMaterials || []).reduce((sum, item) =>
+      sum + item.quantity * item.unitCost, 0);
+    const totalCost = componentsCost + sharedCost;
     const netProfit = (product.price - totalCost) * (1 - product.commissionRate);
 
     const sale = await SaleRecord.create({
