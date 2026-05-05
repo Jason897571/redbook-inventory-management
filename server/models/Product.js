@@ -41,4 +41,10 @@ productSchema.virtual('profitMargin').get(function () {
   return this.price > 0 ? this.netProfit / this.price : 0;
 });
 
+productSchema.virtual('series', {
+  ref: 'ProductSeries',
+  localField: '_id',
+  foreignField: 'products',
+});
+
 module.exports = mongoose.model('Product', productSchema);
