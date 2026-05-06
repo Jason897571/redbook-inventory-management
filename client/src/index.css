@@ -2,39 +2,49 @@
 
 @layer base {
   :root {
-    /* 背景层次 — page < card < popover，逐级提亮 */
-    --background: #17171a;
-    --card: #1e1e22;
-    --popover: #2a2a2e;
-    --muted: #232326;
+    /* 背景层次 — 暖白基调 */
+    --background: #FAF7F2;
+    --card: #FFFFFF;
+    --popover: #FFFFFF;
+    --muted: #F0EBE3;
 
-    /* 文字层次 */
-    --foreground: #f0f1f5;
-    --card-foreground: #f0f1f5;
-    --popover-foreground: #f0f1f5;
-    --muted-foreground: #86909c;
+    /* 文字层次 — 深棕 */
+    --foreground: #3D3229;
+    --card-foreground: #3D3229;
+    --popover-foreground: #3D3229;
+    --muted-foreground: #8C7E72;
 
-    /* 主色调 — Arco 蓝 */
-    --primary: #165DFF;
+    /* 主色调 — 陶土棕 */
+    --primary: #B5634B;
     --primary-foreground: #ffffff;
-    --accent: rgba(22, 93, 255, 0.15);
-    --accent-foreground: #4080FF;
+    --accent: rgba(181, 99, 75, 0.08);
+    --accent-foreground: #B5634B;
 
-    /* 次要主色（中性） */
-    --secondary: #2a2a2e;
-    --secondary-foreground: #f0f1f5;
+    /* 次要主色（暖灰） */
+    --secondary: #F0EBE3;
+    --secondary-foreground: #3D3229;
 
     /* 边框与焦点 */
-    --border: #333338;
-    --input: #333338;
-    --ring: #165DFF;
+    --border: #E5DDD3;
+    --input: #E5DDD3;
+    --ring: #B5634B;
 
     /* 功能色 */
-    --destructive: #f53f3f;
+    --destructive: #C4443A;
     --destructive-foreground: #ffffff;
+
+    /* 语义色 */
+    --color-profit: #4A7C59;
+    --color-loss: #C4443A;
+    --color-warning: #C08B2D;
+    --color-warning-bg: #FEF3E2;
+    --color-alert-dot: #C4443A;
 
     /* 圆角 */
     --radius: 0.5rem;
+
+    /* 字体 */
+    --font-heading: 'LXGW WenKai', cursive;
   }
 }
 
@@ -61,4 +71,32 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+  --font-heading: var(--font-heading);
+}
+
+/* 标题使用文楷字体 */
+h1, h2, h3 {
+  font-family: var(--font-heading);
+}
+
+/* 暖色选中效果 */
+::selection {
+  background-color: rgba(181, 99, 75, 0.2);
+  color: #3D3229;
+}
+
+/* 暖色滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
 }

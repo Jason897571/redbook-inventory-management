@@ -67,7 +67,7 @@ export default function StockLogs() {
                 </td>
                 <td className="p-3 text-foreground">{log.targetName}</td>
                 <td className="p-3 text-muted-foreground">{log.changeType}</td>
-                <td className={`p-3 text-right font-medium ${log.quantity > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <td className={`p-3 text-right font-medium ${log.quantity > 0 ? 'text-[var(--color-profit)]' : 'text-[var(--color-loss)]'}`}>
                   {log.quantity > 0 ? '+' : ''}{log.quantity}
                 </td>
                 <td className="p-3 text-muted-foreground">{log.note}</td>

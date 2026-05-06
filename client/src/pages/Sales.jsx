@@ -140,9 +140,9 @@ export default function Sales() {
                 <td className="p-3 text-right">{s.quantity}</td>
                 <td className="p-3 text-right">¥{s.salePrice}</td>
                 <td className="p-3 text-right text-muted-foreground">¥{s.cost?.toFixed(2)}</td>
-                <td className="p-3 text-right text-green-400">¥{(s.netProfit * s.quantity).toFixed(2)}</td>
+                <td className="p-3 text-right text-[var(--color-profit)]">¥{(s.netProfit * s.quantity).toFixed(2)}</td>
                 <td className="p-3 text-center">
-                  <button onClick={() => deleteSale(s._id)} className="text-red-400 hover:underline text-xs">删除</button>
+                  <button onClick={() => deleteSale(s._id)} className="text-destructive hover:underline text-xs">删除</button>
                 </td>
               </tr>
             ))}
@@ -160,7 +160,7 @@ export default function Sales() {
         </div>
         <div className="flex gap-6 text-sm">
           <span className="text-muted-foreground">销售额: <span className="text-foreground font-medium">¥{summary.totalRevenue.toFixed(2)}</span></span>
-          <span className="text-muted-foreground">净利润: <span className="text-green-400 font-medium">¥{summary.totalProfit.toFixed(2)}</span></span>
+          <span className="text-muted-foreground">净利润: <span className="text-[var(--color-profit)] font-medium">¥{summary.totalProfit.toFixed(2)}</span></span>
         </div>
       </div>
     </div>

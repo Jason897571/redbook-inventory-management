@@ -8,10 +8,10 @@ export default function AlertList({ title, items, nameKey = 'name' }) {
         {items.map((item) => (
           <div key={item._id} className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[var(--color-alert-dot)] animate-pulse" />
               <span className="text-foreground">{item[nameKey]}</span>
             </div>
-            <span className="text-red-400 text-xs">
+            <span className="text-[var(--color-loss)] text-xs">
               剩余 {item.stock} / 阈值 {item.stockAlertThreshold}
             </span>
           </div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Package } from 'lucide-react';
 
 export default function Series() {
   const [seriesList, setSeriesList] = useState([]);
@@ -45,7 +45,7 @@ export default function Series() {
                 {s.image ? (
                   <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground">📦</div>
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground"><Package size={24} /></div>
                 )}
               </div>
               <div className="p-4">
@@ -53,7 +53,7 @@ export default function Series() {
                   <h3 className="font-semibold text-foreground">{s.name}</h3>
                   <button
                     onClick={(e) => deleteItem(e, s._id)}
-                    className="p-1 text-muted-foreground hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="p-1 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <Trash2 size={14} />
                   </button>

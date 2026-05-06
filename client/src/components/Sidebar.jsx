@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSettings } from '@/lib/SettingsContext';
 import {
-  LayoutDashboard, Package, Tags, Gift, ShoppingCart, ClipboardList, Settings, ChevronDown, Layers, GripVertical
+  LayoutDashboard, Package, Tags, Gift, ShoppingCart, ClipboardList, Settings, ChevronDown, Layers, GripVertical, Gem
 } from 'lucide-react';
 import {
   DndContext, closestCenter, PointerSensor, useSensor, useSensors,
@@ -116,7 +116,7 @@ export default function Sidebar() {
         {settings?.shopIcon ? (
           <img src={settings.shopIcon} alt="" className="w-7 h-7 rounded object-cover" />
         ) : (
-          <span>🧶</span>
+          <Gem size={20} className="text-primary" />
         )}
         <span className="text-primary truncate">{settings?.shopName || 'LittleBeads'}</span>
       </div>

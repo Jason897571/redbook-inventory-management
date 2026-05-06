@@ -111,7 +111,7 @@ function PoolItem({ entry, onQuantityChange, onRemove }) {
       </div>
       <button
         onClick={() => onRemove(sp._id)}
-        className="text-muted-foreground hover:text-red-400 transition-colors"
+        className="text-muted-foreground hover:text-destructive transition-colors"
       >
         <X size={16} />
       </button>
@@ -166,7 +166,7 @@ function ProfitPanel({ pool, price, commissionRate }) {
           <>
             <div className="flex justify-between font-medium border-t border-border pt-2">
               <span className="text-foreground">总成本</span>
-              <span className="text-red-400">-¥{totalCost.toFixed(2)}</span>
+              <span className="text-[var(--color-loss)]">-¥{totalCost.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">定价</span>
@@ -178,15 +178,15 @@ function ProfitPanel({ pool, price, commissionRate }) {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">佣金 ({(commissionRate * 100).toFixed(1)}%)</span>
-              <span className="text-red-400">-¥{commission.toFixed(2)}</span>
+              <span className="text-[var(--color-loss)]">-¥{commission.toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold border-t border-border pt-2">
               <span className="text-foreground">净利润</span>
-              <span className={netProfit >= 0 ? 'text-green-400' : 'text-red-400'}>¥{netProfit.toFixed(2)}</span>
+              <span className={netProfit >= 0 ? 'text-[var(--color-profit)]' : 'text-[var(--color-loss)]'}>¥{netProfit.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">利润率</span>
-              <span className={profitMargin >= 0 ? 'text-green-400' : 'text-red-400'}>{profitMargin.toFixed(1)}%</span>
+              <span className={profitMargin >= 0 ? 'text-[var(--color-profit)]' : 'text-[var(--color-loss)]'}>{profitMargin.toFixed(1)}%</span>
             </div>
           </>
         )}
@@ -406,7 +406,7 @@ export default function ProductEdit() {
             {form.styles.filter((s) => !productStyles.includes(s)).map((s) => (
               <span key={s} className="px-3 py-1 rounded-full text-xs border bg-primary border-primary text-primary-foreground inline-flex items-center gap-1">
                 {s}
-                <button onClick={() => removeStyle(s)} className="hover:text-red-200"><X size={10} /></button>
+                <button onClick={() => removeStyle(s)} className="hover:text-destructive"><X size={10} /></button>
               </span>
             ))}
           </div>

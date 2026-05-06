@@ -18,15 +18,15 @@ export default function Dashboard() {
       <h1 className="text-xl font-bold">仪表盘</h1>
 
       <div className="flex gap-4 flex-wrap">
-        <StatsCard label="今日销售额" value={`¥${data.todayRevenue.toFixed(2)}`} icon={DollarSign} color="text-green-400" />
-        <StatsCard label="今日净利润" value={`¥${data.todayProfit.toFixed(2)}`} icon={TrendingUp} color="text-blue-400" />
-        <StatsCard label="库存报警" value={data.alertCount} icon={AlertTriangle} color={data.alertCount > 0 ? 'text-red-400' : 'text-gray-400'} />
+        <StatsCard label="今日销售额" value={`¥${data.todayRevenue.toFixed(2)}`} icon={DollarSign} color="text-[var(--color-profit)]" />
+        <StatsCard label="今日净利润" value={`¥${data.todayProfit.toFixed(2)}`} icon={TrendingUp} color="text-primary" />
+        <StatsCard label="库存报警" value={data.alertCount} icon={AlertTriangle} color={data.alertCount > 0 ? 'text-[var(--color-loss)]' : 'text-muted-foreground'} />
         <StatsCard label="产品总数" value={data.productCount} icon={Package} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <AlertList title="⚠️ 材料库存报警" items={data.materialAlerts} />
-        <AlertList title="⚠️ 成品库存报警" items={data.productAlerts} />
+        <AlertList title="材料库存报警" items={data.materialAlerts} />
+        <AlertList title="成品库存报警" items={data.productAlerts} />
       </div>
 
       <div className="bg-card rounded-lg border border-border p-4">
@@ -51,7 +51,7 @@ export default function Dashboard() {
                   <td className="py-2">{s.product?.name || '-'}</td>
                   <td className="py-2 text-right">{s.quantity}</td>
                   <td className="py-2 text-right">¥{s.salePrice}</td>
-                  <td className="py-2 text-right text-green-400">¥{s.netProfit.toFixed(2)}</td>
+                  <td className="py-2 text-right text-[var(--color-profit)]">¥{s.netProfit.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>

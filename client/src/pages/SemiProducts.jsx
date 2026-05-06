@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Gem } from 'lucide-react';
 
 export default function SemiProducts() {
   const [products, setProducts] = useState([]);
@@ -46,7 +46,7 @@ export default function SemiProducts() {
                 {p.image ? (
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-muted-foreground text-2xl">🧶</div>
+                  <div className="w-full h-full flex items-center justify-center text-muted-foreground"><Gem size={24} /></div>
                 )}
               </div>
               <div className="p-3 space-y-2">
@@ -60,7 +60,7 @@ export default function SemiProducts() {
                 <div className="flex justify-end pt-1 border-t border-border">
                   <button
                     onClick={(e) => deleteItem(e, p._id)}
-                    className="text-xs text-red-400 hover:underline"
+                    className="text-xs text-destructive hover:underline"
                   >
                     删除
                   </button>

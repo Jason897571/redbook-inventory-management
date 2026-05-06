@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Gem } from 'lucide-react';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -49,13 +49,13 @@ export default function Products() {
                   {coverImage ? (
                     <img src={coverImage} alt={p.name} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground text-2xl">🧶</div>
+                    <div className="w-full h-full flex items-center justify-center text-muted-foreground"><Gem size={24} /></div>
                   )}
                 </div>
                 <div className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">{p.code}</span>
-                    <span className={`text-xs ${isLow ? 'text-red-400' : 'text-muted-foreground'}`}>库存: {p.stock}</span>
+                    <span className={`text-xs ${isLow ? 'text-[var(--color-loss)]' : 'text-muted-foreground'}`}>库存: {p.stock}</span>
                   </div>
                   <h3 className="font-medium text-foreground text-sm">{p.name}</h3>
                   {p.styles?.length > 0 && (
@@ -65,12 +65,12 @@ export default function Products() {
                   )}
                   <div className="flex items-center justify-between text-xs pt-1 border-t border-border">
                     <span className="text-muted-foreground">¥{p.price}</span>
-                    <span className="text-green-400">净利 ¥{p.netProfit?.toFixed(2) || '0.00'}</span>
+                    <span className="text-[var(--color-profit)]">净利 ¥{p.netProfit?.toFixed(2) || '0.00'}</span>
                   </div>
                   <div className="flex justify-end">
                     <button
                       onClick={(e) => deleteItem(e, p._id)}
-                      className="text-xs text-red-400 hover:underline"
+                      className="text-xs text-destructive hover:underline"
                     >
                       删除
                     </button>

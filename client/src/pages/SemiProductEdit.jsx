@@ -107,7 +107,7 @@ function PoolItem({ entry, onQuantityChange, onRemove }) {
       </div>
       <button
         onClick={() => onRemove(mat._id)}
-        className="text-muted-foreground hover:text-red-400 transition-colors"
+        className="text-muted-foreground hover:text-destructive transition-colors"
       >
         <X size={16} />
       </button>

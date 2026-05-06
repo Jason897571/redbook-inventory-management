@@ -44,7 +44,7 @@ export default function SettingsPage() {
                 onChange={(url) => setSettings({ ...settings, shopIcon: url })}
               />
             </div>
-            <p className="text-[10px] text-muted-foreground mt-1">显示在左上角，替代默认🧶图标</p>
+            <p className="text-[10px] text-muted-foreground mt-1">显示在左上角，替代默认图标</p>
           </div>
           <div>
             <Label className="text-muted-foreground text-xs">店铺名称</Label>

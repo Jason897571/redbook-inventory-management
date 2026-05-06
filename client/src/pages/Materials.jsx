@@ -103,7 +103,7 @@ export default function Materials() {
             {materials.map((m) => {
               const isLow = m.stock <= m.stockAlertThreshold;
               return (
-                <tr key={m._id} className={`border-t border-border transition-colors hover:bg-muted/30 ${isLow ? 'bg-red-950/20' : ''}`}>
+                <tr key={m._id} className={`border-t border-border transition-colors hover:bg-muted/30 ${isLow ? 'bg-[var(--color-warning-bg)]' : ''}`}>
                   <td className="p-3">
                     <div className="w-9 h-9 bg-muted rounded overflow-hidden">
                       {m.image ? <img src={m.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">无</div>}
@@ -112,9 +112,9 @@ export default function Materials() {
                   <td className="p-3 text-foreground">{m.name}</td>
                   <td className="p-3"><Badge variant="secondary">{m.category}</Badge></td>
                   <td className="p-3 text-right">¥{m.unitPrice.toFixed(4)}</td>
-                  <td className={`p-3 text-right font-medium ${isLow ? 'text-red-400' : ''}`}>{m.stock}</td>
+                  <td className={`p-3 text-right font-medium ${isLow ? 'text-[var(--color-loss)]' : ''}`}>{m.stock}</td>
                   <td className="p-3 text-center">
-                    {isLow ? <span className="text-red-400 text-xs">⚠ 进货！</span> : <span className="text-green-400 text-xs">✓ 充足</span>}
+                    {isLow ? <span className="text-[var(--color-loss)] text-xs">⚠ 进货！</span> : <span className="text-[var(--color-profit)] text-xs">✓ 充足</span>}
                   </td>
                   <td className="p-3">
                     {m.purchaseLink && (
@@ -125,8 +125,8 @@ export default function Materials() {
                   </td>
                   <td className="p-3 text-center space-x-2 text-xs">
                     <button onClick={() => openEdit(m)} className="text-primary hover:underline">编辑</button>
-                    <button onClick={() => setStockInItem(m)} className={isLow ? 'text-yellow-400 hover:underline' : 'text-muted-foreground hover:underline'}>进货</button>
-                    <button onClick={() => deleteItem(m._id)} className="text-red-400 hover:underline">删除</button>
+                    <button onClick={() => setStockInItem(m)} className={isLow ? 'text-[var(--color-warning)] hover:underline' : 'text-muted-foreground hover:underline'}>进货</button>
+                    <button onClick={() => deleteItem(m._id)} className="text-destructive hover:underline">删除</button>
                   </td>
                 </tr>
               );

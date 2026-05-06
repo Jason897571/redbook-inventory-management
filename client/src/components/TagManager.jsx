@@ -28,7 +28,7 @@ export default function TagManager({ label, tags, onChange }) {
             className="flex items-center gap-1 bg-muted text-foreground px-3 py-1 rounded-full text-xs"
           >
             {tag}
-            <button onClick={() => removeTag(tag)} className="text-muted-foreground hover:text-red-400 transition-colors">
+            <button onClick={() => removeTag(tag)} className="text-muted-foreground hover:text-destructive transition-colors">
               <X size={12} />
             </button>
           </span>
