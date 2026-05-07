@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSettings } from '@/lib/SettingsContext';
 import {
-  LayoutDashboard, Package, Tags, Gift, ShoppingCart, ClipboardList, Settings, ChevronDown, Layers, GripVertical, Gem
+  LayoutDashboard, Package, Tags, Gift, ShoppingCart, ClipboardList, Settings, ChevronDown, Layers, GripVertical, Gem, Truck
 } from 'lucide-react';
 import {
   DndContext, closestCenter, PointerSensor, useSensor, useSensors,
@@ -27,6 +27,7 @@ const topItems = [
 ];
 
 const bottomItems = [
+  { to: '/pickups', icon: Truck, label: '揽收单管理' },
   { to: '/sales', icon: ShoppingCart, label: '销售记录' },
   { to: '/stock-logs', icon: ClipboardList, label: '库存日志' },
   { to: '/settings', icon: Settings, label: '设置' },

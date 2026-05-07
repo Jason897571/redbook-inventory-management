@@ -9,6 +9,7 @@ import ProductEdit from './pages/ProductEdit';
 import SemiProducts from './pages/SemiProducts';
 import SemiProductEdit from './pages/SemiProductEdit';
 import Sales from './pages/Sales';
+import Pickups from './pages/Pickups';
 import StockLogs from './pages/StockLogs';
 import SettingsPage from './pages/SettingsPage';
 
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/semi-products/new" element={<SemiProductEdit />} />
         <Route path="/semi-products/:id/edit" element={<SemiProductEdit />} />
         <Route path="/sales" element={<Sales />} />
+        <Route path="/pickups" element={<Pickups />} />
         <Route path="/stock-logs" element={<StockLogs />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
