@@ -69,6 +69,29 @@ export const api = {
   // Dashboard
   getDashboard: () => request('/dashboard'),
 
+  // Export / Import
+  exportData: async () => {
+    const res = await fetch(`${BASE}/export`);
+    if (!res.ok) throw new Error('导出失败');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `export-${Date.now()}.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+  importData: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(`${BASE}/import`, { method: 'POST', body: formData });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: '导入失败' }));
+      throw new Error(err.error || '导入失败');
+    }
+    return res.json();
+  },
+
   // Upload
   uploadImage: async (file) => {
     const formData = new FormData();
