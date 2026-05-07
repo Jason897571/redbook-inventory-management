@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const SaleRecord = require('../models/SaleRecord');
 const Product = require('../models/Product');
+const Material = require('../models/Material');
 const StockLog = require('../models/StockLog');
 
 router.get('/', async (req, res) => {
@@ -89,7 +90,7 @@ router.post('/', async (req, res) => {
     product.stock -= quantity;
     await product.save();
 
-    // Create stock log
+    // Create stock log for product
     await StockLog.create({
       type: 'product',
       targetId: product._id,
@@ -98,6 +99,26 @@ router.post('/', async (req, res) => {
       quantity: -quantity,
       note: `销售 ${quantity} 单`,
     });
+
+    // Deduct raw material stock based on BOM
+    for (const entry of product.semiProducts || []) {
+      const sp = entry.semiProduct;
+      if (!sp || !sp.materials) continue;
+      for (const matEntry of sp.materials) {
+        const mat = matEntry.material;
+        if (!mat) continue;
+        const deduct = matEntry.quantity * entry.quantity * quantity;
+        await Material.findByIdAndUpdate(mat._id, { $inc: { stock: -deduct } });
+        await StockLog.create({
+          type: 'material',
+          targetId: mat._id,
+          targetName: mat.name,
+          changeType: '销售扣减',
+          quantity: -deduct,
+          note: `销售产品「${product.name}」× ${quantity}`,
+        });
+      }
+    }
 
     const populated = await SaleRecord.findById(sale._id).populate('product');
     res.status(201).json(populated);
@@ -111,7 +132,8 @@ router.delete('/:id', async (req, res) => {
     const sale = await SaleRecord.findByIdAndDelete(req.params.id);
     if (!sale) return res.status(404).json({ error: 'Sale not found' });
     // Restore product stock
-    const product = await Product.findById(sale.product);
+    const product = await Product.findById(sale.product)
+      .populate({ path: 'semiProducts.semiProduct', populate: { path: 'materials.material' } });
     if (product) {
       product.stock += sale.quantity;
       await product.save();
@@ -123,6 +145,26 @@ router.delete('/:id', async (req, res) => {
         quantity: sale.quantity,
         note: `删除销售记录，恢复库存`,
       });
+
+      // Restore raw material stock
+      for (const entry of product.semiProducts || []) {
+        const sp = entry.semiProduct;
+        if (!sp || !sp.materials) continue;
+        for (const matEntry of sp.materials) {
+          const mat = matEntry.material;
+          if (!mat) continue;
+          const restore = matEntry.quantity * entry.quantity * sale.quantity;
+          await Material.findByIdAndUpdate(mat._id, { $inc: { stock: restore } });
+          await StockLog.create({
+            type: 'material',
+            targetId: mat._id,
+            targetName: mat.name,
+            changeType: '调整',
+            quantity: restore,
+            note: `删除销售记录「${product.name}」，恢复原材料库存`,
+          });
+        }
+      }
     }
     res.json({ message: 'Deleted' });
   } catch (err) {
