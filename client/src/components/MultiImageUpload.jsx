@@ -1,6 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { api } from '@/lib/api';
-import { Upload, X, Star } from 'lucide-react';
+import { Upload, X, Star, Expand } from 'lucide-react';
 import {
   DndContext, PointerSensor, useSensor, useSensors, closestCenter,
 } from '@dnd-kit/core';
@@ -8,8 +8,9 @@ import {
   SortableContext, useSortable, arrayMove, rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import ImageLightbox from './ImageLightbox';
 
-function SortableImage({ url, index, onRemove }) {
+function SortableImage({ url, index, onRemove, onPreview }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: url,
   });
@@ -32,10 +33,19 @@ function SortableImage({ url, index, onRemove }) {
           <Star size={8} /> 封面
         </div>
       )}
+      {/* Preview button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onPreview(index); }}
+        onPointerDown={(e) => e.stopPropagation()}
+        className="absolute bottom-1 left-1 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:bg-black/80"
+        title="查看大图"
+      >
+        <Expand size={12} />
+      </button>
       <button
         onClick={(e) => { e.stopPropagation(); onRemove(url); }}
         onPointerDown={(e) => e.stopPropagation()}
-        className="absolute top-1 right-1 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute top-1 right-1 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
       >
         <X size={10} />
       </button>
@@ -45,6 +55,7 @@ function SortableImage({ url, index, onRemove }) {
 
 export default function MultiImageUpload({ value = [], onChange }) {
   const inputRef = useRef();
+  const [lightbox, setLightbox] = useState({ open: false, index: 0 });
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
   const handleUpload = async (e) => {
@@ -72,7 +83,13 @@ export default function MultiImageUpload({ value = [], onChange }) {
         <SortableContext items={value} strategy={rectSortingStrategy}>
           <div className="flex flex-wrap gap-2">
             {value.map((url, i) => (
-              <SortableImage key={url} url={url} index={i} onRemove={handleRemove} />
+              <SortableImage
+                key={url}
+                url={url}
+                index={i}
+                onRemove={handleRemove}
+                onPreview={(idx) => setLightbox({ open: true, index: idx })}
+              />
             ))}
             <div
               onClick={() => inputRef.current.click()}
@@ -85,6 +102,13 @@ export default function MultiImageUpload({ value = [], onChange }) {
         </SortableContext>
       </DndContext>
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+
+      <ImageLightbox
+        images={value}
+        initialIndex={lightbox.index}
+        open={lightbox.open}
+        onClose={() => setLightbox({ open: false, index: 0 })}
+      />
     </div>
   );
 }

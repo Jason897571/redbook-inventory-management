@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import ImageUpload from '@/components/ImageUpload';
+import ImageLightbox from '@/components/ImageLightbox';
 import { Plus, ExternalLink } from 'lucide-react';
 
 export default function Materials() {
@@ -14,6 +15,7 @@ export default function Materials() {
   const [settings, setSettings] = useState(null);
   const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
+  const [lightbox, setLightbox] = useState({ open: false, images: [] });
   const [editItem, setEditItem] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [stockInItem, setStockInItem] = useState(null);
@@ -111,7 +113,10 @@ export default function Materials() {
               return (
                 <tr key={m._id} className={`border-t border-border transition-colors hover:bg-muted/30 ${isLow ? 'bg-[var(--color-warning-bg)]' : ''}`}>
                   <td className="p-3">
-                    <div className="w-9 h-9 bg-muted rounded overflow-hidden">
+                    <div
+                      className={`w-9 h-9 bg-muted rounded overflow-hidden ${m.image ? 'cursor-pointer hover:ring-2 hover:ring-primary/40 transition-all' : ''}`}
+                      onClick={() => m.image && setLightbox({ open: true, images: [m.image] })}
+                    >
                       {m.image ? <img src={m.image} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">无</div>}
                     </div>
                   </td>
@@ -194,6 +199,12 @@ export default function Materials() {
           <DialogFooter><Button onClick={doStockIn} disabled={!stockQty}>确认进货</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <ImageLightbox
+        images={lightbox.images}
+        open={lightbox.open}
+        onClose={() => setLightbox({ open: false, images: [] })}
+      />
     </div>
   );
 }

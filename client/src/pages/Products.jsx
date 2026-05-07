@@ -4,9 +4,11 @@ import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Gem } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [lightbox, setLightbox] = useState({ open: false, images: [], index: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,9 +47,20 @@ export default function Products() {
                 onClick={() => navigate(`/products/${p._id}/edit`)}
                 className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all cursor-pointer group"
               >
-                <div className="h-32 bg-muted">
+                <div className="h-32 bg-muted relative group/img">
                   {coverImage ? (
-                    <img src={coverImage} alt={p.name} className="w-full h-full object-cover" />
+                    <>
+                      <img src={coverImage} alt={p.name} className="w-full h-full object-cover" />
+                      <div
+                        className="absolute inset-0 bg-black/0 group-hover/img:bg-black/30 transition-colors flex items-center justify-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightbox({ open: true, images: p.images?.length ? p.images : [coverImage], index: 0 });
+                        }}
+                      >
+                        <span className="text-white text-xs opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/50 px-2 py-1 rounded">查看大图</span>
+                      </div>
+                    </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-muted-foreground"><Gem size={24} /></div>
                   )}
@@ -80,6 +93,13 @@ export default function Products() {
           })}
         </div>
       )}
+
+      <ImageLightbox
+        images={lightbox.images}
+        initialIndex={lightbox.index}
+        open={lightbox.open}
+        onClose={() => setLightbox({ open: false, images: [], index: 0 })}
+      />
     </div>
   );
 }

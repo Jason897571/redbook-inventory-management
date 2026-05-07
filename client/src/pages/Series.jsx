@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2, Package } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 
 export default function Series() {
   const [seriesList, setSeriesList] = useState([]);
+  const [lightbox, setLightbox] = useState({ open: false, images: [] });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,9 +43,20 @@ export default function Series() {
               onClick={() => navigate(`/series/${s._id}/edit`)}
               className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all cursor-pointer group"
             >
-              <div className="h-36 bg-muted">
+              <div className="h-36 bg-muted relative group/img">
                 {s.image ? (
-                  <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+                  <>
+                    <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+                    <div
+                      className="absolute inset-0 bg-black/0 group-hover/img:bg-black/30 transition-colors flex items-center justify-center"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLightbox({ open: true, images: [s.image] });
+                      }}
+                    >
+                      <span className="text-white text-xs opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/50 px-2 py-1 rounded">查看大图</span>
+                    </div>
+                  </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground"><Package size={24} /></div>
                 )}
@@ -67,6 +80,12 @@ export default function Series() {
           ))}
         </div>
       )}
+
+      <ImageLightbox
+        images={lightbox.images}
+        open={lightbox.open}
+        onClose={() => setLightbox({ open: false, images: [] })}
+      />
     </div>
   );
 }
