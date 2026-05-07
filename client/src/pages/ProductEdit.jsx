@@ -205,8 +205,8 @@ export default function ProductEdit() {
   const isNew = !id;
 
   const [form, setForm] = useState({
-    code: '', name: '', styles: [], price: 0, commissionRate: 0.057,
-    stock: 0, stockAlertThreshold: 5, images: [],
+    code: '', name: '', styles: [], price: '', commissionRate: 0.057,
+    stock: '', stockAlertThreshold: '', images: [],
   });
   const [pool, setPool] = useState([]); // [{ semiProduct: {...}, quantity }]
   const [allSemiProducts, setAllSemiProducts] = useState([]);
@@ -332,6 +332,9 @@ export default function ProductEdit() {
     setSaving(true);
     const payload = {
       ...form,
+      price: parseFloat(form.price) || 0,
+      stock: parseInt(form.stock) || 0,
+      stockAlertThreshold: parseInt(form.stockAlertThreshold) || 0,
       semiProducts: pool.map((e) => ({ semiProduct: e.semiProduct._id, quantity: e.quantity })),
     };
     try {
@@ -424,7 +427,7 @@ export default function ProductEdit() {
         <div className="grid grid-cols-4 gap-3">
           <div>
             <Label className="text-xs text-muted-foreground">定价 (¥)</Label>
-            <Input type="number" step="0.1" value={form.price} onChange={(e) => updateForm('price', parseFloat(e.target.value) || 0)} />
+            <Input type="number" step="0.1" value={form.price ?? ''} onChange={(e) => updateForm('price', e.target.value)} />
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">佣金率 (%)</Label>
@@ -432,11 +435,11 @@ export default function ProductEdit() {
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">库存</Label>
-            <Input type="number" value={form.stock} onChange={(e) => updateForm('stock', parseInt(e.target.value) || 0)} />
+            <Input type="number" value={form.stock ?? ''} onChange={(e) => updateForm('stock', e.target.value)} />
           </div>
           <div>
             <Label className="text-xs text-muted-foreground">报警阈值</Label>
-            <Input type="number" value={form.stockAlertThreshold} onChange={(e) => updateForm('stockAlertThreshold', parseInt(e.target.value) || 0)} />
+            <Input type="number" value={form.stockAlertThreshold ?? ''} onChange={(e) => updateForm('stockAlertThreshold', e.target.value)} />
           </div>
         </div>
       </div>
@@ -517,7 +520,7 @@ export default function ProductEdit() {
                 )}
               </DropZone>
             </div>
-            <ProfitPanel pool={pool} price={form.price} commissionRate={form.commissionRate} />
+            <ProfitPanel pool={pool} price={parseFloat(form.price) || 0} commissionRate={form.commissionRate} />
           </div>
         </div>
 

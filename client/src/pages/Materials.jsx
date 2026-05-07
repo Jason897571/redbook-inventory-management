@@ -33,8 +33,8 @@ export default function Materials() {
 
   const openNew = () => {
     setEditItem({
-      name: '', category: '', unitPrice: 0, unit: '个',
-      stock: 0, stockAlertThreshold: 10, purchaseLink: '', image: '', notes: '',
+      name: '', category: '', unitPrice: '', unit: '个',
+      stock: '', stockAlertThreshold: '', purchaseLink: '', image: '', notes: '',
     });
     setShowForm(true);
   };
@@ -42,10 +42,16 @@ export default function Materials() {
   const openEdit = (m) => { setEditItem({ ...m }); setShowForm(true); };
 
   const saveItem = async () => {
+    const payload = {
+      ...editItem,
+      unitPrice: parseFloat(editItem.unitPrice) || 0,
+      stock: parseInt(editItem.stock) || 0,
+      stockAlertThreshold: parseInt(editItem.stockAlertThreshold) || 0,
+    };
     if (editItem._id) {
-      await api.updateMaterial(editItem._id, editItem);
+      await api.updateMaterial(editItem._id, payload);
     } else {
-      await api.createMaterial(editItem);
+      await api.createMaterial(payload);
     }
     setShowForm(false);
     setEditItem(null);
@@ -163,12 +169,12 @@ export default function Materials() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><Label className="text-xs text-muted-foreground">单价</Label><Input type="number" step="0.0001" value={editItem.unitPrice} onChange={(e) => setEditItem({ ...editItem, unitPrice: parseFloat(e.target.value) || 0 })} /></div>
+                <div><Label className="text-xs text-muted-foreground">单价</Label><Input type="number" step="0.0001" value={editItem.unitPrice ?? ''} onChange={(e) => setEditItem({ ...editItem, unitPrice: e.target.value })} /></div>
                 <div><Label className="text-xs text-muted-foreground">购买链接</Label><Input value={editItem.purchaseLink} onChange={(e) => setEditItem({ ...editItem, purchaseLink: e.target.value })} /></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><Label className="text-xs text-muted-foreground">库存</Label><Input type="number" value={editItem.stock} onChange={(e) => setEditItem({ ...editItem, stock: parseInt(e.target.value) || 0 })} /></div>
-                <div><Label className="text-xs text-muted-foreground">报警阈值</Label><Input type="number" value={editItem.stockAlertThreshold} onChange={(e) => setEditItem({ ...editItem, stockAlertThreshold: parseInt(e.target.value) || 0 })} /></div>
+                <div><Label className="text-xs text-muted-foreground">库存</Label><Input type="number" value={editItem.stock ?? ''} onChange={(e) => setEditItem({ ...editItem, stock: e.target.value })} /></div>
+                <div><Label className="text-xs text-muted-foreground">报警阈值</Label><Input type="number" value={editItem.stockAlertThreshold ?? ''} onChange={(e) => setEditItem({ ...editItem, stockAlertThreshold: e.target.value })} /></div>
               </div>
               <div><Label className="text-xs text-muted-foreground">备注</Label><Input value={editItem.notes} onChange={(e) => setEditItem({ ...editItem, notes: e.target.value })} /></div>
             </div>

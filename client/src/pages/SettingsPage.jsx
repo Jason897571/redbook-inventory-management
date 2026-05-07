@@ -19,7 +19,11 @@ export default function SettingsPage() {
   const save = async () => {
     setSaving(true);
     try {
-      const updated = await api.updateSettings(settings);
+      const payload = {
+        ...settings,
+        defaultCommissionRate: parseFloat(settings.defaultCommissionRate) || 0,
+      };
+      const updated = await api.updateSettings(payload);
       setSettings(updated);
       setGlobalSettings(updated);
     } finally {
@@ -53,7 +57,7 @@ export default function SettingsPage() {
           </div>
           <div>
             <Label className="text-muted-foreground text-xs">默认平台佣金率 (%)</Label>
-            <Input type="number" step="0.1" value={(settings.defaultCommissionRate * 100).toFixed(1)} onChange={(e) => setSettings({ ...settings, defaultCommissionRate: parseFloat(e.target.value) / 100 })} />
+            <Input type="number" step="0.1" value={settings.defaultCommissionRate === '' || settings.defaultCommissionRate == null ? '' : (settings.defaultCommissionRate * 100).toFixed(1)} onChange={(e) => setSettings({ ...settings, defaultCommissionRate: e.target.value === '' ? '' : parseFloat(e.target.value) / 100 })} />
           </div>
         </div>
 

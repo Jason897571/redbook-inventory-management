@@ -15,7 +15,7 @@ export default function Sales() {
   // New sale form
   const [selectedProduct, setSelectedProduct] = useState('');
   const [selectedStyle, setSelectedStyle] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState('');
   const [notes, setNotes] = useState('');
 
   const load = async () => {
@@ -45,7 +45,7 @@ export default function Sales() {
     });
     setSelectedProduct('');
     setSelectedStyle('');
-    setQuantity(1);
+    setQuantity('');
     setNotes('');
     load();
   };
