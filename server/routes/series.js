@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ProductSeries = require('../models/ProductSeries');
 
-const populateProducts = { path: 'products', select: 'code name images' };
+const populateProducts = { path: 'products', select: 'name images' };
 
 router.get('/', async (req, res) => {
   try {

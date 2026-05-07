@@ -54,7 +54,6 @@ export default function Products() {
                 </div>
                 <div className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">{p.code}</span>
                     <span className={`text-xs ${isLow ? 'text-[var(--color-loss)]' : 'text-muted-foreground'}`}>库存: {p.stock}</span>
                   </div>
                   <h3 className="font-medium text-foreground text-sm">{p.name}</h3>

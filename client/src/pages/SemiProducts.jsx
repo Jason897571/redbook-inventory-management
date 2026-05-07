@@ -51,7 +51,6 @@ export default function SemiProducts() {
               </div>
               <div className="p-3 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">{p.code}</span>
                   <Badge variant="secondary" className="text-xs">
                     {p.materials?.length || 0}种原料
                   </Badge>

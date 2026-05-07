@@ -43,7 +43,6 @@ function DraggableProduct({ product }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-sm font-medium text-foreground truncate">{product.name}</div>
-        <div className="text-xs text-muted-foreground">{product.code}</div>
       </div>
     </div>
   );
@@ -83,7 +82,6 @@ function PoolItem({ product, onRemove }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-foreground truncate">{product.name}</div>
-        <div className="text-xs text-muted-foreground">{product.code}</div>
       </div>
       <button
         onClick={() => onRemove(product._id)}
@@ -140,8 +138,7 @@ export default function SeriesEdit() {
   }, [id, isNew]);
 
   const filteredProducts = allProducts.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.code.toLowerCase().includes(search.toLowerCase())
+    p.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const updateForm = (key, value) => {

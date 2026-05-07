@@ -6,7 +6,6 @@ const productSemiProductSchema = new mongoose.Schema({
 }, { _id: false });
 
 const productSchema = new mongoose.Schema({
-  code: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   styles: { type: [String], default: [] },
   price: { type: Number, required: true, default: 0 },

@@ -42,7 +42,7 @@ function DraggableSemiProduct({ sp }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-sm font-medium text-foreground truncate">{sp.name}</div>
-        <div className="text-xs text-muted-foreground">{sp.code} · {sp.materials?.length || 0}种原料</div>
+        <div className="text-xs text-muted-foreground">{sp.materials?.length || 0}种原料</div>
       </div>
     </div>
   );
@@ -86,7 +86,7 @@ function PoolItem({ entry, onQuantityChange, onRemove }) {
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-foreground truncate">{sp.name}</div>
-        <div className="text-xs text-muted-foreground">{sp.code} · 成本 ¥{spCost.toFixed(2)}</div>
+        <div className="text-xs text-muted-foreground">成本 ¥{spCost.toFixed(2)}</div>
       </div>
       <div className="flex items-center gap-1">
         <button
@@ -205,7 +205,7 @@ export default function ProductEdit() {
   const isNew = !id;
 
   const [form, setForm] = useState({
-    code: '', name: '', styles: [], price: '', commissionRate: 0.057,
+    name: '', styles: [], price: '', commissionRate: 0.057,
     stock: '', stockAlertThreshold: '', images: [],
   });
   const [pool, setPool] = useState([]); // [{ semiProduct: {...}, quantity }]
@@ -231,7 +231,7 @@ export default function ProductEdit() {
     if (!isNew) {
       api.getProduct(id).then((p) => {
         setForm({
-          code: p.code, name: p.name, styles: p.styles || [],
+          name: p.name, styles: p.styles || [],
           price: p.price, commissionRate: p.commissionRate,
           stock: p.stock, stockAlertThreshold: p.stockAlertThreshold,
           images: p.images || (p.image ? [p.image] : []),
@@ -247,8 +247,7 @@ export default function ProductEdit() {
   }, [id, isNew]);
 
   const filteredSemiProducts = allSemiProducts.filter((sp) =>
-    sp.name.toLowerCase().includes(search.toLowerCase()) ||
-    sp.code.toLowerCase().includes(search.toLowerCase())
+    sp.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const productStyles = settings?.productStyles || [];
@@ -328,7 +327,7 @@ export default function ProductEdit() {
   };
 
   const handleSave = async () => {
-    if (!form.code.trim() || !form.name.trim()) return;
+    if (!form.name.trim()) return;
     setSaving(true);
     const payload = {
       ...form,
@@ -372,7 +371,7 @@ export default function ProductEdit() {
           </button>
           <h1 className="text-xl font-bold">{isNew ? '添加产品' : '编辑产品'}</h1>
         </div>
-        <Button onClick={handleSave} disabled={saving || !form.code.trim() || !form.name.trim()}>
+        <Button onClick={handleSave} disabled={saving || !form.name.trim()}>
           {saving ? '保存中...' : '保存'}
         </Button>
       </div>
@@ -381,10 +380,6 @@ export default function ProductEdit() {
       <div className="bg-card rounded-lg border border-border p-4 mb-6 space-y-4">
         <MultiImageUpload value={form.images} onChange={(imgs) => updateForm('images', imgs)} />
         <div className="grid grid-cols-2 gap-3">
-          <div>
-            <Label className="text-xs text-muted-foreground">产品编号</Label>
-            <Input value={form.code} onChange={(e) => updateForm('code', e.target.value)} placeholder="如 P-001" />
-          </div>
           <div>
             <Label className="text-xs text-muted-foreground">产品名称</Label>
             <Input value={form.name} onChange={(e) => updateForm('name', e.target.value)} placeholder="产品名称" />

@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
   try {
     const products = await Product.find()
       .populate(deepPopulate)
-      .sort({ code: 1 });
+      .sort({ name: 1 });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });

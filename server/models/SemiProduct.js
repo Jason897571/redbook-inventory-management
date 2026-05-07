@@ -6,7 +6,6 @@ const semiProductMaterialSchema = new mongoose.Schema({
 }, { _id: false });
 
 const semiProductSchema = new mongoose.Schema({
-  code: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   image: { type: String, default: '' },
   materials: [semiProductMaterialSchema],

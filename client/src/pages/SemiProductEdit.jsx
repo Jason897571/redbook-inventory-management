@@ -136,7 +136,7 @@ export default function SemiProductEdit() {
   const navigate = useNavigate();
   const isNew = !id;
 
-  const [form, setForm] = useState({ code: '', name: '', image: '' });
+  const [form, setForm] = useState({ name: '', image: '' });
   const [pool, setPool] = useState([]); // [{ material: {...}, quantity: number }]
   const [allMaterials, setAllMaterials] = useState([]);
   const [search, setSearch] = useState('');
@@ -150,7 +150,7 @@ export default function SemiProductEdit() {
     api.getMaterials().then(setAllMaterials);
     if (!isNew) {
       api.getSemiProduct(id).then((sp) => {
-        setForm({ code: sp.code, name: sp.name, image: sp.image || '' });
+        setForm({ name: sp.name, image: sp.image || '' });
         setPool(
           (sp.materials || [])
             .filter((m) => m.material)
@@ -229,7 +229,7 @@ export default function SemiProductEdit() {
   };
 
   const handleSave = async () => {
-    if (!form.code.trim() || !form.name.trim()) return;
+    if (!form.name.trim()) return;
     setSaving(true);
     const payload = {
       ...form,
@@ -270,7 +270,7 @@ export default function SemiProductEdit() {
           </button>
           <h1 className="text-xl font-bold">{isNew ? '添加半成品' : '编辑半成品'}</h1>
         </div>
-        <Button onClick={handleSave} disabled={saving || !form.code.trim() || !form.name.trim()}>
+        <Button onClick={handleSave} disabled={saving || !form.name.trim()}>
           {saving ? '保存中...' : '保存'}
         </Button>
       </div>
@@ -280,14 +280,6 @@ export default function SemiProductEdit() {
         <div className="grid grid-cols-[200px_1fr] gap-4">
           <ImageUpload value={form.image} onChange={(url) => updateForm('image', url)} />
           <div className="space-y-3">
-            <div>
-              <Label className="text-xs text-muted-foreground">编号</Label>
-              <Input
-                value={form.code}
-                onChange={(e) => updateForm('code', e.target.value)}
-                placeholder="如 SP-001"
-              />
-            </div>
             <div>
               <Label className="text-xs text-muted-foreground">名称</Label>
               <Input
