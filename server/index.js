@@ -28,4 +28,11 @@ app.use('/api/upload', require('./routes/upload'));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
+// Serve frontend static files (production build)
+const clientDist = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDist));
+app.get(/^\/(?!api|uploads).*/, (req, res) => {
+  res.sendFile(path.join(clientDist, 'index.html'));
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

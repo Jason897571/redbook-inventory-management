@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: littlebeads-mongo
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+  app:
+    build: .
+    container_name: littlebeads-app
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/littlebeadsbeads
+    ports:
+      - "5000:5000"
+    volumes:
+      - uploads-data:/app/server/uploads
+
+volumes:
+  mongo-data:
+  uploads-data:
