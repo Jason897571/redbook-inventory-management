@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
       }, 0);
       return sum + spCost * entry.quantity;
     }, 0);
-    const netProfit = (product.price - totalCost) * (1 - product.commissionRate);
+    const netProfit = (product.price - totalCost) - product.price * product.commissionRate;
 
     const sale = await SaleRecord.create({
       product: productId,

@@ -144,8 +144,8 @@ function ProfitPanel({ pool, price, commissionRate }) {
     return sum + spCost * entry.quantity;
   }, 0);
   const profit = price - totalCost;
-  const commission = profit * commissionRate;
-  const netProfit = profit * (1 - commissionRate);
+  const commission = price * commissionRate;
+  const netProfit = profit - commission;
   const profitMargin = price > 0 ? (netProfit / price * 100) : 0;
 
   return (
