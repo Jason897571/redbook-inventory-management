@@ -12,7 +12,12 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/littlebeadsbeads')
-  .then(() => console.log('MongoDB connected'))
+  .then(async () => {
+    console.log('MongoDB connected');
+    // Sync indexes: drop stale indexes (e.g. removed key/code unique constraints)
+    const models = mongoose.modelNames().map(name => mongoose.model(name));
+    await Promise.all(models.map(m => m.syncIndexes()));
+  })
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
